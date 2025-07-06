@@ -12,7 +12,23 @@ Spendlix is a full-stack MERN application for tracking personal income and expen
 **File Upload**: Multer  
 **Others**: XLSX, dotenv, CORS
 
+---
 
+## 📸 Screenshots
+
+| Page           | Preview |
+|----------------|---------|
+| Dashboard1     | ![Dashboard1](Screenshots/Dashboard1.png) |
+| Dashboard2     | ![Dashboard2](Screenshots/Dashboard2.png) |
+| Dashboard3     | ![Dashboard3](Screenshots/Dashboard3.png) |
+| Expense1       | ![Expense1](Screenshots/Expence1.png)     |
+| Expense2       | ![Expense2](Screenshots/Expence2.png)     |
+| Income1        | ![Income1](Screenshots/Income1.png)       |
+| Income2        | ![Income2](Screenshots/Income2.png)       |
+| Login Page     | ![Login](Screenshots/LoginPage.png)      |
+| Sign Up Page   | ![SignUp](Screenshots/SignUpPage.png)   |
+
+---
 
 ## 🗂️ Project Structure
 
