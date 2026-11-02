@@ -19,11 +19,14 @@ import ExpenseTransactions from "../../components/Dashboard/ExpenseTransactions"
 import Last30DaysExpenses from "../../components/Dashboard/Last30DaysExpenses";
 import RecentIncomeWithChart from "../../components/Dashboard/RecentIncomeWithChart";
 import RecentIncome from "../../components/Dashboard/RecentIncome";
+import { StatCardSkeleton } from "../../components/Cards/Skeleton";
+import TimeRangeFilter, { isWithinTimeRange } from "../../components/Inputs/TimeRangeFilter";
 
 const Home = () => {
   useUserAuth();
   const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState(null);
+  const [filter, setFilter] = useState("all");
   const [loading, setLoading] = useState(true);
 
   const fetchDashboardData = async () => {
@@ -41,15 +44,76 @@ const Home = () => {
     fetchDashboardData();
   }, []);
 
-  const totalBalance = dashboardData?.totalBalance || 0;
-  const totalIncome = dashboardData?.totalIncome || 0;
-  const totalExpense = dashboardData?.totalExpense || 0;
+  // Filter transactions according to selected range
+  const filteredRecentTransactions = (dashboardData?.recentTransactions || []).filter(
+    (item) => isWithinTimeRange(item.date, filter)
+  );
+
+  const filteredExpenseList = (
+    dashboardData?.last30daysExpenses?.transactions || []
+  ).filter((item) => isWithinTimeRange(item.date, filter));
+
+  const filteredIncomeList = (
+    dashboardData?.last60DaysIncome?.transaction || []
+  ).filter((item) => isWithinTimeRange(item.date, filter));
+
+  // Dynamically compute totals if filter is applied, fallback to backend aggregate for 'all'
+  const totalIncome =
+    filter === "all"
+      ? dashboardData?.totalIncome || 0
+      : filteredIncomeList.reduce((sum, item) => sum + item.amount, 0);
+
+  const totalExpense =
+    filter === "all"
+      ? dashboardData?.totalExpense || 0
+      : filteredExpenseList.reduce((sum, item) => sum + item.amount, 0);
+
+  const totalBalance =
+    filter === "all"
+      ? dashboardData?.totalBalance || 0
+      : totalIncome - totalExpense;
+
   const netSavings = totalIncome - totalExpense;
 
   return (
     <DashboardLayout activeMenu="Dashboard">
       <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-        {/* Top Summary Stat Panels (Clean, Flat, Modern 2x2 App Grid on Mobile) */}
+        {/* Dashboard Title & Time Range Filter Bar */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "10px",
+          }}
+        >
+          <div>
+            <h1
+              className="heading-lg"
+              style={{
+                margin: 0,
+                fontSize: "22px",
+                color: "var(--text-primary)",
+              }}
+            >
+              Overview & Analytics
+            </h1>
+            <p
+              style={{
+                margin: "2px 0 0",
+                fontSize: "12px",
+                color: "var(--text-muted)",
+              }}
+            >
+              Real-time summary of your financial health & activity
+            </p>
+          </div>
+
+          <TimeRangeFilter activeFilter={filter} onChange={setFilter} />
+        </div>
+
+        {/* Top Summary Stat Panels */}
         <div
           style={{
             display: "grid",
@@ -57,7 +121,18 @@ const Home = () => {
             gap: "10px",
           }}
         >
-          {/* Spend / Total Expenses Panel */}
+
+          {loading ? (
+            <>
+              <StatCardSkeleton />
+              <StatCardSkeleton />
+              <StatCardSkeleton />
+              <StatCardSkeleton />
+            </>
+          ) : (
+            <>
+              {/* Spend / Total Expenses Panel */}
+
           <div
             style={{
               padding: "14px 18px",
@@ -176,7 +251,10 @@ const Home = () => {
               Income minus expenses
             </div>
           </div>
+            </>
+          )}
         </div>
+
 
         {/* Sync Info Banner (Flat, minimal) */}
         <div
@@ -228,7 +306,7 @@ const Home = () => {
           />
 
           <RecentTransactions
-            transactions={dashboardData?.recentTransactions}
+            transactions={filteredRecentTransactions}
             onSeeMore={() => navigate("/expense")}
             loading={loading}
           />
@@ -243,14 +321,12 @@ const Home = () => {
           }}
         >
           <Last30DaysExpenses
-            data={dashboardData?.last30daysExpenses?.transactions || []}
+            data={filteredExpenseList}
             loading={loading}
           />
 
           <RecentIncomeWithChart
-            data={
-              dashboardData?.last60DaysIncome?.transaction?.slice(0, 6) || []
-            }
+            data={filteredIncomeList.slice(0, 6)}
             totalIncome={totalIncome}
             loading={loading}
           />
@@ -265,13 +341,13 @@ const Home = () => {
           }}
         >
           <ExpenseTransactions
-            transactions={dashboardData?.last30daysExpenses?.transactions || []}
+            transactions={filteredExpenseList}
             onSeeMore={() => navigate("/expense")}
             loading={loading}
           />
 
           <RecentIncome
-            transactions={dashboardData?.last60DaysIncome?.transaction || []}
+            transactions={filteredIncomeList}
             onSeeMore={() => navigate("/income")}
             loading={loading}
           />
@@ -280,5 +356,6 @@ const Home = () => {
     </DashboardLayout>
   );
 };
+
 
 export default Home;

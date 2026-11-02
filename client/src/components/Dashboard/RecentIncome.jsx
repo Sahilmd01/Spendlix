@@ -2,8 +2,45 @@ import moment from "moment";
 import React from "react";
 import { LuArrowRight, LuWalletMinimal } from "react-icons/lu";
 import TransactionInfoCard from "../Cards/TransactionInfoCard";
+import { Skeleton } from "../Cards/Skeleton";
 
-const RecentIncome = ({ transactions, onSeeMore }) => {
+const RecentIncome = ({ transactions, onSeeMore, loading }) => {
+  if (loading) {
+    return (
+      <div className="card">
+        <div className="flex items-center justify-between">
+          <Skeleton width="110px" height="20px" />
+          <Skeleton width="70px" height="20px" borderRadius="var(--radius-pill)" />
+        </div>
+        <div className="mt-4" style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div
+              key={i}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "12px 14px",
+                backgroundColor: "var(--surface-muted)",
+                borderRadius: "var(--radius-md)",
+                border: "1px solid var(--border-default)",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <Skeleton width="36px" height="36px" borderRadius="50%" />
+                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                  <Skeleton width="100px" height="13px" />
+                  <Skeleton width="70px" height="11px" />
+                </div>
+              </div>
+              <Skeleton width="60px" height="16px" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="card">
       <div className="flex items-center justify-between">

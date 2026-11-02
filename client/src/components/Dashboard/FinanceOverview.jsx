@@ -1,9 +1,14 @@
 import React from "react";
 import CustomPieChart from "../Charts/CustomPieChart";
+import { ChartCardSkeleton } from "../Cards/Skeleton";
 
 const COLORS = ["#875CF5", "#FA2C37", "#FF6900"];
 
-const FinanceOverview = ({ totalBalance, totalIncome, totalExpense }) => {
+const FinanceOverview = ({ totalBalance, totalIncome, totalExpense, loading }) => {
+  if (loading) {
+    return <ChartCardSkeleton height={260} />;
+  }
+
   const balanceData = [
     { name: "Total Balance", amount: totalBalance },
     { name: "Total Expense", amount: totalExpense },
@@ -26,3 +31,4 @@ const FinanceOverview = ({ totalBalance, totalIncome, totalExpense }) => {
 };
 
 export default FinanceOverview;
+

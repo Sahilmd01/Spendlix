@@ -18,12 +18,16 @@ import IncomeList from "../../components/Income/IncomeList";
 import DeleteAlert from "../../components/DeleteAlert";
 import { useUserAuth } from "../../hooks/useUserAuth";
 import { addThousandSeparator } from "../../utils/helper";
+import { StatCardSkeleton } from "../../components/Cards/Skeleton";
+import TimeRangeFilter, { isWithinTimeRange } from "../../components/Inputs/TimeRangeFilter";
 
 const Income = () => {
   useUserAuth();
 
   const [incomeData, setIncomeData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [filter, setFilter] = useState("all");
+  const [loading, setLoading] = useState(true);
+
   const [openDeleteAlert, setOpenDeleteAlert] = useState({
     show: false,
     data: null,
@@ -31,8 +35,6 @@ const Income = () => {
   const [openAddIncomeModal, setOpenAddIncomeModal] = useState(false);
 
   const fetchIncomeDetails = async () => {
-    if (loading) return;
-    setLoading(true);
     try {
       const response = await axiosInstance.get(API_PATHS.INCOME.GET_ALL_INCOME);
       if (response.data) setIncomeData(response.data);
@@ -42,6 +44,7 @@ const Income = () => {
       setLoading(false);
     }
   };
+
 
   const handleAddIncome = async (income) => {
     const { source, amount, date, icon } = income;
@@ -84,8 +87,12 @@ const Income = () => {
     fetchIncomeDetails();
   }, []);
 
-  const totalIncome = incomeData.reduce((sum, item) => sum + item.amount, 0);
-  const last30DaysIncome = incomeData
+  const filteredIncomeData = incomeData.filter((item) =>
+    isWithinTimeRange(item.date, filter)
+  );
+
+  const totalIncome = filteredIncomeData.reduce((sum, item) => sum + item.amount, 0);
+  const last30DaysIncome = filteredIncomeData
     .filter(
       (item) =>
         new Date(item.date) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
@@ -127,7 +134,8 @@ const Income = () => {
             </p>
           </div>
 
-          <div style={{ display: "flex", gap: "8px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+            <TimeRangeFilter activeFilter={filter} onChange={setFilter} />
             <button
               onClick={handleDownloadIncomeDetails}
               className="btn btn-secondary"
@@ -147,6 +155,7 @@ const Income = () => {
           </div>
         </div>
 
+
         {/* 4 Stat Metric Panels (2x2 Mobile App Grid) */}
         <div
           style={{
@@ -155,186 +164,199 @@ const Income = () => {
             gap: "10px",
           }}
         >
-          <div
-            style={{
-              padding: "14px 18px",
-              backgroundColor: "var(--surface)",
-              border: "1px solid var(--border-default)",
-              borderRadius: "var(--radius-md)",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-                TOTAL INCOME
-              </span>
+          {loading ? (
+            <>
+              <StatCardSkeleton />
+              <StatCardSkeleton />
+              <StatCardSkeleton />
+              <StatCardSkeleton />
+            </>
+          ) : (
+            <>
               <div
                 style={{
-                  width: "28px",
-                  height: "28px",
-                  borderRadius: "var(--radius-sm)",
-                  background: "var(--success-bg)",
-                  color: "var(--success)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  padding: "14px 18px",
+                  backgroundColor: "var(--surface)",
+                  border: "1px solid var(--border-default)",
+                  borderRadius: "var(--radius-md)",
                 }}
               >
-                <FiDollarSign size={15} />
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+                    TOTAL INCOME
+                  </span>
+                  <div
+                    style={{
+                      width: "28px",
+                      height: "28px",
+                      borderRadius: "var(--radius-sm)",
+                      background: "var(--success-bg)",
+                      color: "var(--success)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <FiDollarSign size={15} />
+                  </div>
+                </div>
+                <div
+                  className="heading-lg"
+                  style={{ fontSize: "24px", color: "var(--text-primary)", marginTop: "8px" }}
+                >
+                  ₹{addThousandSeparator(totalIncome)}
+                </div>
               </div>
-            </div>
-            <div
-              className="heading-lg"
-              style={{ fontSize: "24px", color: "var(--text-primary)", marginTop: "8px" }}
-            >
-              ₹{addThousandSeparator(totalIncome)}
-            </div>
-          </div>
 
-          <div
-            style={{
-              padding: "14px 18px",
-              backgroundColor: "var(--surface)",
-              border: "1px solid var(--border-default)",
-              borderRadius: "var(--radius-md)",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-                LAST 30 DAYS
-              </span>
               <div
                 style={{
-                  width: "28px",
-                  height: "28px",
-                  borderRadius: "var(--radius-sm)",
-                  background: "var(--info-bg)",
-                  color: "var(--info)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  padding: "14px 18px",
+                  backgroundColor: "var(--surface)",
+                  border: "1px solid var(--border-default)",
+                  borderRadius: "var(--radius-md)",
                 }}
               >
-                <FiTrendingUp size={15} />
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+                    LAST 30 DAYS
+                  </span>
+                  <div
+                    style={{
+                      width: "28px",
+                      height: "28px",
+                      borderRadius: "var(--radius-sm)",
+                      background: "var(--info-bg)",
+                      color: "var(--info)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <FiTrendingUp size={15} />
+                  </div>
+                </div>
+                <div
+                  className="heading-lg"
+                  style={{ fontSize: "24px", color: "var(--text-primary)", marginTop: "8px" }}
+                >
+                  ₹{addThousandSeparator(last30DaysIncome)}
+                </div>
               </div>
-            </div>
-            <div
-              className="heading-lg"
-              style={{ fontSize: "24px", color: "var(--text-primary)", marginTop: "8px" }}
-            >
-              ₹{addThousandSeparator(last30DaysIncome)}
-            </div>
-          </div>
 
-          <div
-            style={{
-              padding: "14px 18px",
-              backgroundColor: "var(--surface)",
-              border: "1px solid var(--border-default)",
-              borderRadius: "var(--radius-md)",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-                TOTAL TRANSACTIONS
-              </span>
               <div
                 style={{
-                  width: "28px",
-                  height: "28px",
-                  borderRadius: "var(--radius-sm)",
-                  background: "var(--surface-hover)",
-                  color: "var(--text-muted)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  padding: "14px 18px",
+                  backgroundColor: "var(--surface)",
+                  border: "1px solid var(--border-default)",
+                  borderRadius: "var(--radius-md)",
                 }}
               >
-                <FiPieChart size={15} />
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+                    TOTAL TRANSACTIONS
+                  </span>
+                  <div
+                    style={{
+                      width: "28px",
+                      height: "28px",
+                      borderRadius: "var(--radius-sm)",
+                      background: "var(--surface-hover)",
+                      color: "var(--text-muted)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <FiPieChart size={15} />
+                  </div>
+                </div>
+                <div
+                  className="heading-lg"
+                  style={{ fontSize: "24px", color: "var(--text-primary)", marginTop: "8px" }}
+                >
+                  {filteredIncomeData.length} Entries
+                </div>
               </div>
-            </div>
-            <div
-              className="heading-lg"
-              style={{ fontSize: "24px", color: "var(--text-primary)", marginTop: "8px" }}
-            >
-              {incomeData.length} Entries
-            </div>
-          </div>
 
-          <div
-            style={{
-              padding: "14px 18px",
-              backgroundColor: "var(--surface)",
-              border: "1px solid var(--border-default)",
-              borderRadius: "var(--radius-md)",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-                AVERAGE / ENTRY
-              </span>
               <div
                 style={{
-                  width: "28px",
-                  height: "28px",
-                  borderRadius: "var(--radius-sm)",
-                  background: "rgba(37, 99, 235, 0.15)",
-                  color: "var(--accent)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  padding: "14px 18px",
+                  backgroundColor: "var(--surface)",
+                  border: "1px solid var(--border-default)",
+                  borderRadius: "var(--radius-md)",
                 }}
               >
-                <FiActivity size={15} />
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+                    AVERAGE / ENTRY
+                  </span>
+                  <div
+                    style={{
+                      width: "28px",
+                      height: "28px",
+                      borderRadius: "var(--radius-sm)",
+                      background: "rgba(37, 99, 235, 0.15)",
+                      color: "var(--accent)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <FiActivity size={15} />
+                  </div>
+                </div>
+                <div
+                  className="heading-lg"
+                  style={{ fontSize: "24px", color: "var(--text-primary)", marginTop: "8px" }}
+                >
+                  ₹{filteredIncomeData.length > 0
+                    ? addThousandSeparator(Math.round(totalIncome / filteredIncomeData.length))
+                    : "0"}
+                </div>
               </div>
-            </div>
-            <div
-              className="heading-lg"
-              style={{ fontSize: "24px", color: "var(--text-primary)", marginTop: "8px" }}
-            >
-              ₹{incomeData.length > 0
-                ? addThousandSeparator(Math.round(totalIncome / incomeData.length))
-                : "0"}
-            </div>
-          </div>
+            </>
+          )}
         </div>
 
         {/* Overview Chart Card */}
         <IncomeOverview
-          transactions={incomeData}
+          transactions={filteredIncomeData}
+          loading={loading}
           onAddIncome={() => setOpenAddIncomeModal(true)}
         />
 
         {/* Detailed Stream List Card */}
         <IncomeList
-          transactions={incomeData}
+          transactions={filteredIncomeData}
           loading={loading}
           onDelete={(id) => setOpenDeleteAlert({ show: true, data: id })}
           onDownload={handleDownloadIncomeDetails}
         />
+
 
         {/* Modal: Add Income */}
         <Modal

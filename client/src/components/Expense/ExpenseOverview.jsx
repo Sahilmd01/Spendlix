@@ -3,14 +3,20 @@ import { LuPlus } from "react-icons/lu";
 
 import { prepareExpenseLineChartData } from "../../utils/helper";
 import CustomLineChart from "../Charts/CustomLineChart";
+import { ChartCardSkeleton } from "../Cards/Skeleton";
 
-const ExpenseOverview = ({ transactions, onExpenseIncome }) => {
+const ExpenseOverview = ({ transactions, onExpenseIncome, loading }) => {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
     const result = prepareExpenseLineChartData(transactions);
     setChartData(result);
   }, [transactions]);
+
+  if (loading) {
+    return <ChartCardSkeleton height={280} />;
+  }
+
 
   return (
     <div className="card">

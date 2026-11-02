@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-
 import { prepareExpenseBarChartData } from "../../utils/helper";
 import CustomBarChart from "../Charts/CustomBarChart";
+import { ChartCardSkeleton } from "../Cards/Skeleton";
 
-const Last30DaysExpenses = ({ data }) => {
+const Last30DaysExpenses = ({ data, loading }) => {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
@@ -12,6 +12,11 @@ const Last30DaysExpenses = ({ data }) => {
 
     return () => {};
   }, [data]);
+
+  if (loading) {
+    return <ChartCardSkeleton height={260} />;
+  }
+
   return (
     <div className="card col-span-1">
       <div className="flex items-center justify-between">
@@ -22,5 +27,6 @@ const Last30DaysExpenses = ({ data }) => {
     </div>
   );
 };
+
 
 export default Last30DaysExpenses;

@@ -18,12 +18,15 @@ import ExpenseList from "../../components/Expense/ExpenseList";
 import DeleteAlert from "../../components/DeleteAlert";
 import { useUserAuth } from "../../hooks/useUserAuth";
 import { addThousandSeparator } from "../../utils/helper";
+import { StatCardSkeleton } from "../../components/Cards/Skeleton";
+import TimeRangeFilter, { isWithinTimeRange } from "../../components/Inputs/TimeRangeFilter";
 
 const Expense = () => {
   useUserAuth();
 
   const [expenseData, setExpenseData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [filter, setFilter] = useState("all");
+  const [loading, setLoading] = useState(true);
   const [openDeleteAlert, setOpenDeleteAlert] = useState({
     show: false,
     data: null,
@@ -31,8 +34,6 @@ const Expense = () => {
   const [openAddExpenseModal, setOpenAddExpenseModal] = useState(false);
 
   const fetchExpenseDetails = async () => {
-    if (loading) return;
-    setLoading(true);
     try {
       const response = await axiosInstance.get(API_PATHS.EXPENSE.GET_ALL_EXPENSE);
       if (response.data) setExpenseData(response.data);
@@ -84,8 +85,12 @@ const Expense = () => {
     fetchExpenseDetails();
   }, []);
 
-  const totalExpense = expenseData.reduce((sum, item) => sum + item.amount, 0);
-  const last30DaysExpense = expenseData
+  const filteredExpenseData = expenseData.filter((item) =>
+    isWithinTimeRange(item.date, filter)
+  );
+
+  const totalExpense = filteredExpenseData.reduce((sum, item) => sum + item.amount, 0);
+  const last30DaysExpense = filteredExpenseData
     .filter(
       (item) =>
         new Date(item.date) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
@@ -127,7 +132,8 @@ const Expense = () => {
             </p>
           </div>
 
-          <div style={{ display: "flex", gap: "8px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+            <TimeRangeFilter activeFilter={filter} onChange={setFilter} />
             <button
               onClick={handleDownloadExpenseDetails}
               className="btn btn-secondary"
@@ -147,6 +153,7 @@ const Expense = () => {
           </div>
         </div>
 
+
         {/* 4 Stat Metric Panels (2x2 Mobile App Grid) */}
         <div
           style={{
@@ -155,186 +162,199 @@ const Expense = () => {
             gap: "10px",
           }}
         >
-          <div
-            style={{
-              padding: "14px 18px",
-              backgroundColor: "var(--surface)",
-              border: "1px solid var(--border-default)",
-              borderRadius: "var(--radius-md)",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-                TOTAL EXPENSES
-              </span>
+          {loading ? (
+            <>
+              <StatCardSkeleton />
+              <StatCardSkeleton />
+              <StatCardSkeleton />
+              <StatCardSkeleton />
+            </>
+          ) : (
+            <>
               <div
                 style={{
-                  width: "28px",
-                  height: "28px",
-                  borderRadius: "var(--radius-sm)",
-                  background: "var(--error-bg)",
-                  color: "var(--error)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  padding: "14px 18px",
+                  backgroundColor: "var(--surface)",
+                  border: "1px solid var(--border-default)",
+                  borderRadius: "var(--radius-md)",
                 }}
               >
-                <FiCreditCard size={15} />
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+                    TOTAL EXPENSES
+                  </span>
+                  <div
+                    style={{
+                      width: "28px",
+                      height: "28px",
+                      borderRadius: "var(--radius-sm)",
+                      background: "var(--error-bg)",
+                      color: "var(--error)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <FiCreditCard size={15} />
+                  </div>
+                </div>
+                <div
+                  className="heading-lg"
+                  style={{ fontSize: "24px", color: "var(--text-primary)", marginTop: "8px" }}
+                >
+                  ₹{addThousandSeparator(totalExpense)}
+                </div>
               </div>
-            </div>
-            <div
-              className="heading-lg"
-              style={{ fontSize: "24px", color: "var(--text-primary)", marginTop: "8px" }}
-            >
-              ₹{addThousandSeparator(totalExpense)}
-            </div>
-          </div>
 
-          <div
-            style={{
-              padding: "14px 18px",
-              backgroundColor: "var(--surface)",
-              border: "1px solid var(--border-default)",
-              borderRadius: "var(--radius-md)",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-                LAST 30 DAYS
-              </span>
               <div
                 style={{
-                  width: "28px",
-                  height: "28px",
-                  borderRadius: "var(--radius-sm)",
-                  background: "var(--warning-bg)",
-                  color: "var(--warning)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  padding: "14px 18px",
+                  backgroundColor: "var(--surface)",
+                  border: "1px solid var(--border-default)",
+                  borderRadius: "var(--radius-md)",
                 }}
               >
-                <FiTrendingUp size={15} />
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+                    LAST 30 DAYS
+                  </span>
+                  <div
+                    style={{
+                      width: "28px",
+                      height: "28px",
+                      borderRadius: "var(--radius-sm)",
+                      background: "var(--warning-bg)",
+                      color: "var(--warning)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <FiTrendingUp size={15} />
+                  </div>
+                </div>
+                <div
+                  className="heading-lg"
+                  style={{ fontSize: "24px", color: "var(--text-primary)", marginTop: "8px" }}
+                >
+                  ₹{addThousandSeparator(last30DaysExpense)}
+                </div>
               </div>
-            </div>
-            <div
-              className="heading-lg"
-              style={{ fontSize: "24px", color: "var(--text-primary)", marginTop: "8px" }}
-            >
-              ₹{addThousandSeparator(last30DaysExpense)}
-            </div>
-          </div>
 
-          <div
-            style={{
-              padding: "14px 18px",
-              backgroundColor: "var(--surface)",
-              border: "1px solid var(--border-default)",
-              borderRadius: "var(--radius-md)",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-                EXPENSE ENTRIES
-              </span>
               <div
                 style={{
-                  width: "28px",
-                  height: "28px",
-                  borderRadius: "var(--radius-sm)",
-                  background: "var(--surface-hover)",
-                  color: "var(--text-muted)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  padding: "14px 18px",
+                  backgroundColor: "var(--surface)",
+                  border: "1px solid var(--border-default)",
+                  borderRadius: "var(--radius-md)",
                 }}
               >
-                <FiPieChart size={15} />
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+                    EXPENSE ENTRIES
+                  </span>
+                  <div
+                    style={{
+                      width: "28px",
+                      height: "28px",
+                      borderRadius: "var(--radius-sm)",
+                      background: "var(--surface-hover)",
+                      color: "var(--text-muted)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <FiPieChart size={15} />
+                  </div>
+                </div>
+                <div
+                  className="heading-lg"
+                  style={{ fontSize: "24px", color: "var(--text-primary)", marginTop: "8px" }}
+                >
+                  {filteredExpenseData.length} Entries
+                </div>
               </div>
-            </div>
-            <div
-              className="heading-lg"
-              style={{ fontSize: "24px", color: "var(--text-primary)", marginTop: "8px" }}
-            >
-              {expenseData.length} Entries
-            </div>
-          </div>
 
-          <div
-            style={{
-              padding: "14px 18px",
-              backgroundColor: "var(--surface)",
-              border: "1px solid var(--border-default)",
-              borderRadius: "var(--radius-md)",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-                AVERAGE / EXPENSE
-              </span>
               <div
                 style={{
-                  width: "28px",
-                  height: "28px",
-                  borderRadius: "var(--radius-sm)",
-                  background: "rgba(37, 99, 235, 0.15)",
-                  color: "var(--accent)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  padding: "14px 18px",
+                  backgroundColor: "var(--surface)",
+                  border: "1px solid var(--border-default)",
+                  borderRadius: "var(--radius-md)",
                 }}
               >
-                <FiActivity size={15} />
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+                    AVERAGE / EXPENSE
+                  </span>
+                  <div
+                    style={{
+                      width: "28px",
+                      height: "28px",
+                      borderRadius: "var(--radius-sm)",
+                      background: "rgba(37, 99, 235, 0.15)",
+                      color: "var(--accent)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <FiActivity size={15} />
+                  </div>
+                </div>
+                <div
+                  className="heading-lg"
+                  style={{ fontSize: "24px", color: "var(--text-primary)", marginTop: "8px" }}
+                >
+                  ₹{filteredExpenseData.length > 0
+                    ? addThousandSeparator(Math.round(totalExpense / filteredExpenseData.length))
+                    : "0"}
+                </div>
               </div>
-            </div>
-            <div
-              className="heading-lg"
-              style={{ fontSize: "24px", color: "var(--text-primary)", marginTop: "8px" }}
-            >
-              ₹{expenseData.length > 0
-                ? addThousandSeparator(Math.round(totalExpense / expenseData.length))
-                : "0"}
-            </div>
-          </div>
+            </>
+          )}
         </div>
 
         {/* Expense Overview Line Trend Card */}
         <ExpenseOverview
-          transactions={expenseData}
+          transactions={filteredExpenseData}
+          loading={loading}
           onExpenseIncome={() => setOpenAddExpenseModal(true)}
         />
 
         {/* Detailed Expenses List Card */}
         <ExpenseList
-          transactions={expenseData}
+          transactions={filteredExpenseData}
           loading={loading}
           onDelete={(id) => setOpenDeleteAlert({ show: true, data: id })}
           onDownload={handleDownloadExpenseDetails}
         />
+
 
         {/* Modal: Add Expense */}
         <Modal

@@ -1,13 +1,19 @@
 import React from "react";
 import { LuDownload, LuWalletMinimal } from "react-icons/lu";
 import TransactionInfoCard from "../Cards/TransactionInfoCard";
+import { TransactionListSkeleton } from "../Cards/Skeleton";
 import moment from "moment";
 
-const IncomeList = ({ transactions, onDelete, onDownload }) => {
+const IncomeList = ({ transactions, onDelete, onDownload, loading }) => {
+  if (loading) {
+    return <TransactionListSkeleton count={4} />;
+  }
+
   return (
     <div className="card">
       <div className="flex items-center justify-between">
         <h5 className="text-lg">Income Source</h5>
+
 
         <button className="card-btn" onClick={onDownload}>
           <LuDownload className="text-base" /> Download

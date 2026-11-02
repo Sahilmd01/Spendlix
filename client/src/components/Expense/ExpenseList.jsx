@@ -1,13 +1,19 @@
 import React from "react";
 import { LuDownload, LuCreditCard } from "react-icons/lu";
 import TransactionInfoCard from "../Cards/TransactionInfoCard";
+import { TransactionListSkeleton } from "../Cards/Skeleton";
 import moment from "moment";
 
-const ExpenseList = ({ transactions, onDelete, onDownload }) => {
+const ExpenseList = ({ transactions, onDelete, onDownload, loading }) => {
+  if (loading) {
+    return <TransactionListSkeleton count={4} />;
+  }
+
   return (
     <div className="card">
       <div className="flex items-center justify-between">
         <h5 className="text-lg">All Expenses</h5>
+
 
         <button className="card-btn" onClick={onDownload}>
           <LuDownload className="text-base" /> Download

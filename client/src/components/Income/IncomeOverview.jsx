@@ -3,14 +3,20 @@ import { LuPlus } from "react-icons/lu";
 
 import { prepareIncomeBarChartData } from "../../utils/helper";
 import CustomBarChart from "../Charts/CustomBarChart";
+import { ChartCardSkeleton } from "../Cards/Skeleton";
 
-const IncomeOverview = ({ transactions, onAddIncome }) => {
+const IncomeOverview = ({ transactions, onAddIncome, loading }) => {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
     const result = prepareIncomeBarChartData(transactions);
     setChartData(result);
   }, [transactions]);
+
+  if (loading) {
+    return <ChartCardSkeleton height={280} />;
+  }
+
 
   return (
     <div className="card">

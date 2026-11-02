@@ -20,15 +20,36 @@ app.use(
 
 app.use(express.json());
 
-connectDB();
+// Ensure database is connected before handling requests
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    res.status(500).json({
+      message: "Database connection failed",
+      error: err.message,
+    });
+  }
+});
+
+// Root Health Check Route (so visiting https://spendlix-server.vercel.app/ in browser returns 200 OK)
+app.get("/", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    message: "Spendlix API server is running live on Vercel 🚀",
+  });
+});
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/income", incomeRoutes);
 app.use("/api/v1/expense", expenseRoutes);
 app.use("/api/v1/dashboard", dashboardRoutes);
 
-
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+}
 
 module.exports = app;
+
