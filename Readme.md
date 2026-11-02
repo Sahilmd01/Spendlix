@@ -1,206 +1,152 @@
-# 💸 Spendlix - Expense Tracker
+# 💸 Spendlix - Modern Expense Tracker & Financial Dashboard
 
-Spendlix is a full-stack MERN application for tracking personal income and expenses with intuitive visualizations and a clean dashboard interface.
+Spendlix is a modern, responsive full-stack MERN application for tracking personal finances, visualizing income and expenses with interactive charts, and managing monthly budgets seamlessly across desktop and mobile devices.
 
 ---
 
-## 📸 Screenshots
+## 📸 Screenshots & Previews
 
-| Page           | Preview |
-|----------------|---------|
-| Login Page     | ![Login](Screenshots/LoginPage.png)      |
-| Sign Up Page   | ![SignUp](Screenshots/SignUpPage.png)   |
-| Dashboard1     | ![Dashboard1](Screenshots/Dashboard1.png) |
-| Dashboard2     | ![Dashboard2](Screenshots/Dashboard2.png) |
-| Dashboard3     | ![Dashboard3](Screenshots/Dashboard3.png) |
-| Expense1       | ![Expense1](Screenshots/Expence1.png)     |
-| Expense2       | ![Expense2](Screenshots/Expence2.png)     |
-| Income1        | ![Income1](Screenshots/Income1.png)       |
-| Income2        | ![Income2](Screenshots/Income2.png)       |
+| View | Screenshot |
+| :--- | :--- |
+| **Main Dashboard**<br>_Overview, Balance cards, Recent transactions & Expense breakdown_ | ![Dashboard Overview](Screenshots/dashboard.png) |
+| **Income Management**<br>_Income sources, Category breakdown, and monthly analytics_ | ![Income Overview](Screenshots/income.png) |
+| **Expense Tracking**<br>_Categorized expenses, Trends, and detailed transaction history_ | ![Expense Overview](Screenshots/expence.png) |
+| **Mobile & Responsive View**<br>_PWA-ready mobile layout, quick actions, and touch-optimized navigation_ | <img src="Screenshots/mobile.png" alt="Mobile View" width="380" /> |
 
+---
+
+## 🚀 Key Features
+
+- 📊 **Dynamic Financial Visualizations**: Interactive Bar charts, Line graphs, and Pie charts powered by Recharts.
+- 💰 **Income & Expense Management**: Fast entry, categorized sorting, and real-time transaction updates.
+- 📱 **Mobile-First & PWA-Ready**: Fully responsive layout tailored for mobile devices with an app-like navigation and touch feel.
+- 🔐 **Secure JWT Authentication**: Protected routes with token-based session management and profile avatar personalization.
+- 📑 **Excel Export**: Export transaction histories and statements directly to `.xlsx`.
+- ⚡ **Vercel & Cloud Deployment**: Configured for seamless serverless deployment across frontend and backend.
+
+---
 
 ## 🔧 Tech Stack
 
-**Frontend**: React, Axios, Recharts  
-**Backend**: Node.js, Express, MongoDB, Mongoose  
-**Auth**: JWT  
-**File Upload**: Multer  
-**Others**: XLSX, dotenv, CORS
-
-
-
-## 🗂️ Project Structure
-
-### 📁 `frontend/`
-
-```
-
-frontend/
-├── public/
-├── src/
-│   ├── assets/
-│   ├── components/
-│   │   ├── Cards/
-│   │   │   ├── CharAvatar.jsx
-│   │   │   ├── InfoCard.jsx
-│   │   │   └── TransactionInfoCard.jsx
-│   │   ├── Charts/
-│   │   │   ├── CustomBarChart.jsx
-│   │   │   ├── CustomLegend.jsx
-│   │   │   ├── CustomLineChart.jsx
-│   │   │   ├── CustomPieChart.jsx
-│   │   │   └── CustomTooltip.jsx
-│   │   ├── Dashboard/
-│   │   │   ├── ExpenseTransactions.jsx
-│   │   │   ├── FinanceOverview\.jsx
-│   │   │   ├── Last30DaysExpenses.jsx
-│   │   │   ├── RecentIncome.jsx
-│   │   │   ├── RecentIncomeWithChart.jsx
-│   │   │   └── RecentTransactions.jsx
-│   │   ├── Expense/
-│   │   │   ├── AddExpenseForm.jsx
-│   │   │   ├── ExpenseList.jsx
-│   │   │   └── ExpenseOverview\.jsx
-│   │   ├── Income/
-│   │   │   ├── AddIncomeForm.jsx
-│   │   │   ├── IncomeList.jsx
-│   │   │   └── IncomeOverview\.jsx
-│   │   ├── Inputs/
-│   │   │   ├── Input.jsx
-│   │   │   └── ProfilePhotoSelector.jsx
-│   │   ├── layouts/
-│   │   │   ├── AuthLayout.jsx
-│   │   │   ├── DashboardLayout.jsx
-│   │   │   ├── Navbar.jsx
-│   │   │   ├── SideMenu.jsx
-│   │   │   ├── DeleteAlert.jsx
-│   │   │   ├── EmojiPickerPopup.jsx
-│   │   │   └── Modal.jsx
-│   ├── context/
-│   │   └── userContext.jsx
-│   ├── hooks/
-│   │   └── useUserAuth.jsx
-│   ├── pages/
-│   │   ├── Auth/
-│   │   │   ├── Login.jsx
-│   │   │   └── SignUp.jsx
-│   │   ├── Dashboard/
-│   │   │   └── Expense.jsx
-│   │   ├── Home.jsx
-│   │   └── Income.jsx
-│   ├── utils/
-│   │   ├── apiPaths.js
-│   │   ├── axiosInstance.js
-│   │   ├── data.js
-│   │   ├── helper.js
-│   │   └── uploadImage.js
-│   ├── App.jsx
-│   └── index.css
-
-```
+- **Client**: React 18, Vite, React Router, Recharts, Lucide Icons / React Icons, Tailwind CSS / Vanilla CSS
+- **Server**: Node.js, Express.js
+- **Database**: MongoDB (Mongoose ODM)
+- **Authentication**: JSON Web Tokens (JWT) & bcrypt.js
+- **File & Media Handling**: Multer (Avatar uploads)
+- **Data Export**: XLSX
 
 ---
 
-### 📁 `server/` (Backend)
+## 🗂️ Project Structure
 
 ```
+Spendlix/
+├── client/                     # Frontend application (React + Vite)
+│   ├── public/                 # Static assets & PWA manifest / Service Worker
+│   ├── src/
+│   │   ├── assets/             # Images & static media
+│   │   ├── components/         # Reusable UI components & layouts
+│   │   │   ├── Cards/          # Info cards, avatars, metrics
+│   │   │   ├── Charts/         # Recharts wrappers (Pie, Bar, Line)
+│   │   │   ├── Dashboard/      # Dashboard widgets & summaries
+│   │   │   ├── Expense/        # Expense forms, lists & views
+│   │   │   ├── Income/         # Income forms, lists & views
+│   │   │   ├── Inputs/         # Form inputs & photo picker
+│   │   │   └── layouts/        # Navbar, SideMenu, Modals & Shells
+│   │   ├── context/            # User & Auth Context
+│   │   ├── hooks/              # Custom React hooks
+│   │   ├── pages/              # Route pages (Dashboard, Income, Expense, Auth)
+│   │   ├── utils/              # Axios instance, helpers & API constants
+│   │   ├── App.jsx             # Root React component
+│   │   └── index.css           # Global design tokens and styles
+│   └── vite.config.js
+│
+├── server/                     # Backend REST API (Node + Express)
+│   ├── config/                 # Database configuration (MongoDB connection)
+│   ├── controllers/            # Controller business logic
+│   ├── middleware/             # Auth & upload middlewares
+│   ├── models/                 # Mongoose schemas (User, Income, Expense)
+│   ├── routes/                 # Express API route endpoints
+│   ├── server.js               # Express application entrypoint
+│   └── vercel.json             # Vercel deployment configuration
+│
+└── Screenshots/                # Application preview images
+    ├── dashboard.png
+    ├── income.png
+    ├── expence.png
+    └── mobile.png
+```
 
-server/
-├── config/
-│   └── db.js
-├── controllers/
-│   ├── authController.js
-│   ├── dashboardController.js
-│   ├── expenseController.js
-│   └── incomeController.js
-├── middleware/
-│   ├── authMiddleware.js
-│   └── uploadMiddleware.js
-├── models/
-│   ├── Expense.js
-│   ├── Income.js
-│   └── User.js
-├── routes/
-│   ├── authRoutes.js
-│   ├── dashboardRoutes.js
-│   ├── expenseRoutes.js
-│   └── incomeRoutes.js
-├── uploads/
-├── .env
-├── .gitignore
-├── expense\_details.xlsx
-├── server.js
-├── package.json
-└── package-lock.json
-
-````
-
+---
 
 ## ⚙️ Getting Started
 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/sahilmd01/spendlix.git
-cd spendlix
-````
-
-### 2. Install dependencies
-
-#### Backend
-
-```bash
-cd server
-npm install
+git clone https://github.com/Sahilmd01/Spendlix.git
+cd Spendlix
 ```
 
-#### Frontend
+### 2. Configure Environment Variables
 
-```bash
-cd ../frontend
-npm install
-```
-
-### 3. Setup environment variables
-
+#### Backend (`server/.env`)
 Create a `.env` file inside the `server/` directory:
 
-```
+```env
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
+JWT_SECRET=your_jwt_secret_key
+CLIENT_URL=http://localhost:5173
 ```
 
-### 4. Run the application
+#### Frontend (`client/.env`)
+Create a `.env` file inside the `client/` directory:
 
-#### Backend
-
-```bash
-cd server
-npm run dev
-```
-
-#### Frontend
-
-```bash
-cd ../frontend
-npm start
+```env
+VITE_API_BASE_URL=http://localhost:5000
 ```
 
 ---
 
-## ✨ Features
+### 3. Install Dependencies & Run Locally
 
-* JWT-based authentication
-* Dashboard with dynamic charts (Pie, Line, Bar)
-* Add and manage income and expenses
-* Upload and manage profile avatars
-* Export data as Excel
-* Clean and responsive user interface
+#### Option A: Run from Project Root (Recommended)
+You can launch both frontend and backend concurrently from the root:
+
+```bash
+# Install root & workspaces dependencies
+npm install
+
+# Run backend
+npm run server
+
+# Run frontend (in another terminal)
+npm run client
+```
+
+#### Option B: Run Individually
+
+##### Backend:
+```bash
+cd server
+npm install
+npm run dev
+```
+
+##### Frontend:
+```bash
+cd client
+npm install
+npm run dev
+```
+
+The frontend will run at `http://localhost:5173` and communicate with the backend at `http://localhost:5000`.
 
 ---
 
 ## 📝 License
 
-MIT © [SAHIL](https://github.com/sahilmd01)
+Distributed under the MIT License. See `LICENSE` for more information.
 
+Developed by [SAHIL](https://github.com/Sahilmd01)
