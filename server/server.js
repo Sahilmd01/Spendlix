@@ -48,9 +48,24 @@ app.use("/api/v1/expense", expenseRoutes);
 app.use("/api/v1/dashboard", dashboardRoutes);
 
 const PORT = process.env.PORT || 5000;
-if (process.env.NODE_ENV !== "production") {
-  app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
-}
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+
+  // Auto Keep-Alive Cron Job for Render (Pings every 8 minutes to prevent sleep)
+  const https = require("https");
+  const RENDER_EXTERNAL_URL =
+    process.env.RENDER_EXTERNAL_URL || "https://spendlix.onrender.com";
+
+  setInterval(() => {
+    https
+      .get(RENDER_EXTERNAL_URL, (res) => {
+        console.log(`[Keep-Alive Ping] Status: ${res.statusCode} at ${new Date().toISOString()}`);
+      })
+      .on("error", (err) => {
+        console.error("[Keep-Alive Error]:", err.message);
+      });
+  }, 8 * 60 * 1000); // 8 minutes (480,000 ms)
+});
 
 module.exports = app;
 
