@@ -51,21 +51,29 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 
-  // Auto Keep-Alive Cron Job for Render (Pings every 8 minutes to prevent sleep)
-  const https = require("https");
+  // Self-ping Keep-Alive Cron: pings server every 10 minutes (600,000ms) to prevent Render free-tier sleep
   const RENDER_EXTERNAL_URL =
     process.env.RENDER_EXTERNAL_URL || "https://spendlix.onrender.com";
 
-  setInterval(() => {
-    https
-      .get(RENDER_EXTERNAL_URL, (res) => {
-        console.log(`[Keep-Alive Ping] Status: ${res.statusCode} at ${new Date().toISOString()}`);
-      })
-      .on("error", (err) => {
-        console.error("[Keep-Alive Error]:", err.message);
-      });
-  }, 8 * 60 * 1000); // 8 minutes (480,000 ms)
+  if (process.env.NODE_ENV === "production" || process.env.RENDER_EXTERNAL_URL) {
+    const https = require("https");
+    const http = require("http");
+
+    setInterval(() => {
+      const client = RENDER_EXTERNAL_URL.startsWith("https") ? https : http;
+      client
+        .get(RENDER_EXTERNAL_URL, (res) => {
+          console.log(`[Keep-Alive] Self-pinged ${RENDER_EXTERNAL_URL} - Status: ${res.statusCode}`);
+        })
+        .on("error", (err) => {
+          console.error("[Keep-Alive] Ping error:", err.message);
+        });
+    }, 10 * 60 * 1000); // 10 minutes
+
+    console.log(`Keep-alive cron activated for: ${RENDER_EXTERNAL_URL} (every 10m)`);
+  }
 });
 
 module.exports = app;
+
 
