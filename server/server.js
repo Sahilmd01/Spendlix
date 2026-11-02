@@ -20,7 +20,15 @@ app.use(
 
 app.use(express.json());
 
-// Ensure database is connected before handling requests
+// Root Health Check Route (responds immediately without waiting for DB)
+app.get("/", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    message: "Spendlix API server is running live on Vercel 🚀",
+  });
+});
+
+// Ensure database is connected before handling API requests
 app.use(async (req, res, next) => {
   try {
     await connectDB();
@@ -33,13 +41,6 @@ app.use(async (req, res, next) => {
   }
 });
 
-// Root Health Check Route (so visiting https://spendlix-server.vercel.app/ in browser returns 200 OK)
-app.get("/", (req, res) => {
-  res.status(200).json({
-    status: "ok",
-    message: "Spendlix API server is running live on Vercel 🚀",
-  });
-});
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/income", incomeRoutes);
