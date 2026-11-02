@@ -116,7 +116,7 @@ const MobileBottomNav = ({ onOpenAddModal }) => {
         className="mobile-bottom-nav-container"
         style={{
           position: "fixed",
-          bottom: "16px",
+          bottom: "calc(16px + env(safe-area-inset-bottom, 0px))",
           left: "50%",
           transform: "translateX(-50%)",
           width: "calc(100% - 28px)",

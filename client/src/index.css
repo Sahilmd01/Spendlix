@@ -125,20 +125,25 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
+html,
 body {
   margin: 0;
+  padding: 0;
   min-width: 320px;
-  background: var(--background);
+  background-color: #0D0D15;
   color: var(--text-primary);
   font-family: var(--font-family);
   font-size: var(--font-base);
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: #0D0D15;
 }
 
 /* Custom Sleek Dark Scrollbar */
