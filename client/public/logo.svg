@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <!-- Squircle rounded background matching sleek minimalist dark theme -->
+  <rect width="512" height="512" rx="128" fill="#171720" />
+  <rect width="508" height="508" x="2" y="2" rx="126" fill="none" stroke="#2D2D3A" stroke-width="4" />
+  
+  <!-- Sleek financial metric bars / chart bars with rounded pill caps -->
+  <!-- Bar 1: Intro metric -->
+  <rect x="116" y="224" width="46" height="136" rx="23" fill="#FFFFFF" opacity="0.9" />
+
+  <!-- Bar 2: Mid rise metric -->
+  <rect x="186" y="170" width="46" height="190" rx="23" fill="#FFFFFF" opacity="0.95" />
+
+  <!-- Bar 3: Peak expenditure / revenue pillar -->
+  <rect x="256" y="112" width="46" height="248" rx="23" fill="#FFFFFF" />
+
+  <!-- Bar 4: Sustained analytics column -->
+  <rect x="326" y="196" width="46" height="164" rx="23" fill="#FFFFFF" opacity="0.92" />
+
+  <!-- Subtle upward tracking dot / dynamic indicator above the 4th pillar -->
+  <circle cx="349" cy="144" r="14" fill="#FFFFFF" />
+</svg>

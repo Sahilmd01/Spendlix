@@ -20,8 +20,8 @@ const IncomeOverview = ({ transactions, onAddIncome }) => {
           alignItems: "center",
           justifyContent: "space-between",
           flexWrap: "wrap",
-          gap: "12px",
-          marginBottom: "16px",
+          gap: "10px",
+          marginBottom: "10px",
         }}
       >
         <div>

@@ -1,0 +1,43 @@
+{
+  "short_name": "Spendix",
+  "name": "Spendix - Smart Expense & Subscription Tracker",
+  "description": "Manage your expenses, subscriptions, and financial cashflow smartly with real-time analytics.",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "theme_color": "#0D0D15",
+  "background_color": "#0D0D15",
+  "orientation": "portrait",
+  "categories": ["finance", "productivity", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Add Expense",
+      "url": "/expense",
+      "description": "Quickly log a new expense"
+    },
+    {
+      "name": "Add Income",
+      "url": "/income",
+      "description": "Log new income earnings"
+    }
+  ]
+}

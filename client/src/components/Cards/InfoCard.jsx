@@ -28,13 +28,11 @@ const InfoCard = ({
   return (
     <div 
       className={`
-        flex gap-5 p-6 rounded-2xl 
-        bg-white/80 backdrop-blur-sm
-        shadow-lg shadow-gray-100/50 
-        border border-gray-200/30
-        hover:shadow-xl hover:shadow-gray-200/30
-        transition-all duration-300
-        ${onClick ? "cursor-pointer hover:scale-[1.02]" : ""}
+        flex gap-5 p-5 rounded-lg 
+        bg-[var(--surface)]
+        border border-[var(--border-default)]
+        transition-all duration-200
+        ${onClick ? "cursor-pointer hover:bg-[var(--surface-hover)]" : ""}
         relative overflow-hidden
       `}
       onClick={onClick}

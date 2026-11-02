@@ -1,0 +1,16 @@
+{
+  "name": "spendlix",
+  "version": "1.0.0",
+  "description": "Spendlix Full Stack Expense Tracker Application",
+  "scripts": {
+    "build": "npm --prefix client run build",
+    "build:client": "npm --prefix client run build",
+    "preview": "npm --prefix client run preview",
+    "client": "npm --prefix client run dev",
+    "server": "npm --prefix server run dev",
+    "dev": "npm --prefix client run dev"
+  },
+  "keywords": [],
+  "author": "SAHIL",
+  "license": "MIT"
+}

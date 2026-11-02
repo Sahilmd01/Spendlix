@@ -5,16 +5,24 @@ export const validateEmail = (email) => {
   return regex.test(email);
 };
 
-export const getInitials = (name) => {
-  if (!name) return "";
-  const words = name.split(" ");
-  let initials = "";
-
-  for (let i = 0; i < Math.min(words.length, 2); i++) {
-    initials += words[i][0];
+export const getInitials = (name, email) => {
+  // If email is provided, show first and second letter of the email username (e.g. kinu@gmail.com -> KI)
+  if (email && typeof email === "string" && email.trim()) {
+    const username = email.trim().split("@")[0].replace(/[^a-zA-Z0-9]/g, "");
+    if (username.length >= 2) {
+      return username.slice(0, 2).toUpperCase();
+    } else if (username.length === 1) {
+      return username.toUpperCase();
+    }
   }
 
-  return initials.toUpperCase();
+  // Fallback to name initials
+  if (!name || typeof name !== "string") return "U";
+  const words = name.trim().split(/\s+/);
+  if (words.length >= 2) {
+    return (words[0][0] + words[1][0]).toUpperCase();
+  }
+  return name.trim().slice(0, 2).toUpperCase();
 };
 
 export const addThousandSeparator = (num) => {

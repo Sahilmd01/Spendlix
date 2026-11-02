@@ -48,247 +48,167 @@ const Home = () => {
 
   return (
     <DashboardLayout activeMenu="Dashboard">
-      <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-        {/* Top Section: Promo + Recurring Spend Hero + Payment Alert */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+        {/* Top Summary Stat Panels (Clean, Flat, Modern 2x2 App Grid on Mobile) */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-            gap: "18px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(145px, 1fr))",
+            gap: "10px",
           }}
         >
-          {/* 1. Try Premium / Promo Banner (inspired by reference Apple Music card) */}
+          {/* Spend / Total Expenses Panel */}
           <div
-            className="promo-card"
             style={{
-              padding: "26px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              minHeight: "180px",
-              border: "1px solid var(--border-subtle)",
+              padding: "14px 18px",
+              backgroundColor: "var(--surface)",
+              border: "1px solid var(--border-default)",
+              borderRadius: "var(--radius-md)",
             }}
           >
-            <div>
-              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <div
-                  style={{
-                    width: "34px",
-                    height: "34px",
-                    borderRadius: "50%",
-                    background: "#FA2D48",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#FFF",
-                    fontSize: "16px",
-                  }}
-                >
-                  ♫
-                </div>
-                <div>
-                  <h4 style={{ margin: 0, fontSize: "15px", fontWeight: 600 }}>
-                    Try Spendix Pro
-                  </h4>
-                  <p
-                    style={{
-                      margin: "2px 0 0",
-                      fontSize: "12px",
-                      color: "var(--text-secondary)",
-                    }}
-                  >
-                    Enjoy 3 months of automatic subscription tracking
-                  </p>
-                </div>
-              </div>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontSize: "12px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                Total Expenses
+              </span>
+              <span className="badge badge-error">Spend</span>
             </div>
-
             <div
+              className="heading-xl"
               style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-end",
-                marginTop: "20px",
+                fontSize: "32px",
+                color: "var(--text-primary)",
+                margin: "12px 0 4px",
               }}
             >
-              <div>
-                <div
-                  style={{
-                    fontSize: "22px",
-                    fontWeight: 700,
-                    letterSpacing: "-0.5px",
-                  }}
-                >
-                  3 Months Free
-                </div>
-                <div style={{ fontSize: "11px", color: "var(--text-secondary)" }}>
-                  Then ₹199/month · Cancel anytime
-                </div>
-              </div>
-              <button
-                className="btn btn-primary"
-                style={{
-                  padding: "8px 18px",
-                  fontSize: "13px",
-                  borderRadius: "var(--radius-pill)",
-                }}
-              >
-                Start Now
-              </button>
+              ₹{addThousandSeparator(totalExpense)}
+            </div>
+            <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+              Monthly recurring outflow
             </div>
           </div>
 
-          {/* 2. Total Monthly Recurring Spend (Main Hero Metric) */}
+          {/* Income Panel */}
           <div
-            className="card card-elevated"
             style={{
-              padding: "24px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
+              padding: "14px 18px",
+              backgroundColor: "var(--surface)",
+              border: "1px solid var(--border-default)",
+              borderRadius: "var(--radius-md)",
             }}
           >
-            <div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "8px",
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                  <LuCreditCard size={18} color="var(--primary-light)" />
-                  <span style={{ fontSize: "13px", color: "var(--text-muted)" }}>
-                    Total Monthly Recurring Spend
-                  </span>
-                </div>
-                <span className="badge badge-success">+8.5% increase</span>
-              </div>
-
-              <div
-                className="heading-xl"
-                style={{
-                  fontSize: "42px",
-                  color: "var(--text-primary)",
-                  margin: "8px 0 0",
-                }}
-              >
-                ₹{addThousandSeparator(totalExpense)}
-              </div>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontSize: "12px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                Total Income
+              </span>
+              <span className="badge badge-success">+Inflow</span>
             </div>
-
             <div
+              className="heading-xl"
               style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr",
-                gap: "10px",
-                marginTop: "16px",
-                paddingTop: "14px",
-                borderTop: "1px solid var(--border-subtle)",
+                fontSize: "28px",
+                color: "var(--success)",
+                margin: "8px 0 2px",
               }}
             >
-              <div
-                style={{
-                  background: "var(--surface)",
-                  padding: "8px 12px",
-                  borderRadius: "var(--radius-md)",
-                  border: "1px solid var(--border-subtle)",
-                }}
-              >
-                <div style={{ fontSize: "10px", color: "var(--text-muted)" }}>
-                  Balance
-                </div>
-                <div
-                  style={{
-                    fontSize: "14px",
-                    fontWeight: 600,
-                    color: "var(--text-primary)",
-                    marginTop: "2px",
-                  }}
-                >
-                  ₹{addThousandSeparator(totalBalance)}
-                </div>
-              </div>
-              <div
-                style={{
-                  background: "var(--surface)",
-                  padding: "8px 12px",
-                  borderRadius: "var(--radius-md)",
-                  border: "1px solid var(--border-subtle)",
-                }}
-              >
-                <div style={{ fontSize: "10px", color: "var(--text-muted)" }}>
-                  Income
-                </div>
-                <div
-                  style={{
-                    fontSize: "14px",
-                    fontWeight: 600,
-                    color: "var(--success)",
-                    marginTop: "2px",
-                  }}
-                >
-                  ₹{addThousandSeparator(totalIncome)}
-                </div>
-              </div>
-              <div
-                style={{
-                  background: "var(--surface)",
-                  padding: "8px 12px",
-                  borderRadius: "var(--radius-md)",
-                  border: "1px solid var(--border-subtle)",
-                }}
-              >
-                <div style={{ fontSize: "10px", color: "var(--text-muted)" }}>
-                  Savings
-                </div>
-                <div
-                  style={{
-                    fontSize: "14px",
-                    fontWeight: 600,
-                    color: "var(--accent)",
-                    marginTop: "2px",
-                  }}
-                >
-                  ₹{addThousandSeparator(netSavings)}
-                </div>
-              </div>
+              ₹{addThousandSeparator(totalIncome)}
+            </div>
+            <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+              Recorded revenue streams
+            </div>
+          </div>
+
+          {/* Net Balance Panel */}
+          <div
+            style={{
+              padding: "14px 18px",
+              backgroundColor: "var(--surface)",
+              border: "1px solid var(--border-default)",
+              borderRadius: "var(--radius-md)",
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontSize: "12px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                Net Balance
+              </span>
+              <span className="badge badge-info">Liquid</span>
+            </div>
+            <div
+              className="heading-xl"
+              style={{
+                fontSize: "28px",
+                color: "var(--text-primary)",
+                margin: "8px 0 2px",
+              }}
+            >
+              ₹{addThousandSeparator(totalBalance)}
+            </div>
+            <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+              Available account liquidity
+            </div>
+          </div>
+
+          {/* Savings Panel */}
+          <div
+            style={{
+              padding: "14px 18px",
+              backgroundColor: "var(--surface)",
+              border: "1px solid var(--border-default)",
+              borderRadius: "var(--radius-md)",
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontSize: "12px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                Net Savings
+              </span>
+              <span className="badge badge-warning">Surplus</span>
+            </div>
+            <div
+              className="heading-xl"
+              style={{
+                fontSize: "28px",
+                color: "var(--accent)",
+                margin: "8px 0 2px",
+              }}
+            >
+              ₹{addThousandSeparator(netSavings)}
+            </div>
+            <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+              Income minus expenses
             </div>
           </div>
         </div>
 
-        {/* Payment Alert Banner (inspired by reference image) */}
+        {/* Sync Info Banner (Flat, minimal) */}
         <div
-          className="alert-gradient"
           style={{
-            padding: "14px 22px",
-            borderRadius: "var(--radius-card)",
+            padding: "10px 16px",
+            borderRadius: "var(--radius-md)",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
             flexWrap: "wrap",
-            gap: "12px",
-            border: "1px solid var(--border-subtle)",
+            gap: "10px",
+            backgroundColor: "var(--surface)",
+            border: "1px solid var(--border-default)",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <LuShieldAlert size={18} color="#FBBF24" />
-            <span style={{ fontSize: "13px", color: "var(--text-primary)" }}>
-              Your recurring expenses are synced. Review recent categories to avoid surprise overdrafts.
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <LuShieldAlert size={16} color="#FBBF24" />
+            <span style={{ fontSize: "12px", color: "var(--text-secondary)" }}>
+              Your financial records are up to date. Review recent transactions and category trends below.
             </span>
           </div>
           <button
             onClick={() => navigate("/expense")}
             className="btn btn-secondary"
             style={{
-              padding: "6px 16px",
+              padding: "5px 12px",
               fontSize: "12px",
-              borderRadius: "var(--radius-pill)",
-              backgroundColor: "rgba(255, 255, 255, 0.1)",
+              borderRadius: "var(--radius-md)",
+              border: "1px solid var(--border-default)",
             }}
           >
-            Review Now →
+            Review Expenses →
           </button>
         </div>
 
@@ -296,79 +216,65 @@ const Home = () => {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))",
-            gap: "18px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))",
+            gap: "12px",
           }}
         >
-          {/* Finance Overview Pie Chart */}
-          <div className="card card-elevated" style={{ padding: "22px" }}>
-            <FinanceOverview
-              totalBalance={totalBalance}
-              totalIncome={totalIncome}
-              totalExpense={totalExpense}
-              loading={loading}
-            />
-          </div>
+          <FinanceOverview
+            totalBalance={totalBalance}
+            totalIncome={totalIncome}
+            totalExpense={totalExpense}
+            loading={loading}
+          />
 
-          {/* Recent Activity stream */}
-          <div className="card card-elevated" style={{ padding: "22px" }}>
-            <RecentTransactions
-              transactions={dashboardData?.recentTransactions}
-              onSeeMore={() => navigate("/expense")}
-              loading={loading}
-            />
-          </div>
+          <RecentTransactions
+            transactions={dashboardData?.recentTransactions}
+            onSeeMore={() => navigate("/expense")}
+            loading={loading}
+          />
         </div>
 
         {/* Bottom Section: Trend Breakdown & Recent Income */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))",
-            gap: "18px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))",
+            gap: "12px",
           }}
         >
-          <div className="card card-elevated" style={{ padding: "22px" }}>
-            <Last30DaysExpenses
-              data={dashboardData?.last30daysExpenses?.transactions || []}
-              loading={loading}
-            />
-          </div>
+          <Last30DaysExpenses
+            data={dashboardData?.last30daysExpenses?.transactions || []}
+            loading={loading}
+          />
 
-          <div className="card card-elevated" style={{ padding: "22px" }}>
-            <RecentIncomeWithChart
-              data={
-                dashboardData?.last60DaysIncome?.transaction?.slice(0, 6) || []
-              }
-              totalIncome={totalIncome}
-              loading={loading}
-            />
-          </div>
+          <RecentIncomeWithChart
+            data={
+              dashboardData?.last60DaysIncome?.transaction?.slice(0, 6) || []
+            }
+            totalIncome={totalIncome}
+            loading={loading}
+          />
         </div>
 
         {/* Detail lists */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))",
-            gap: "18px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))",
+            gap: "12px",
           }}
         >
-          <div className="card card-elevated" style={{ padding: "22px" }}>
-            <ExpenseTransactions
-              transactions={dashboardData?.last30daysExpenses?.transactions || []}
-              onSeeMore={() => navigate("/expense")}
-              loading={loading}
-            />
-          </div>
+          <ExpenseTransactions
+            transactions={dashboardData?.last30daysExpenses?.transactions || []}
+            onSeeMore={() => navigate("/expense")}
+            loading={loading}
+          />
 
-          <div className="card card-elevated" style={{ padding: "22px" }}>
-            <RecentIncome
-              transactions={dashboardData?.last60DaysIncome?.transaction || []}
-              onSeeMore={() => navigate("/income")}
-              loading={loading}
-            />
-          </div>
+          <RecentIncome
+            transactions={dashboardData?.last60DaysIncome?.transaction || []}
+            onSeeMore={() => navigate("/income")}
+            loading={loading}
+          />
         </div>
       </div>
     </DashboardLayout>

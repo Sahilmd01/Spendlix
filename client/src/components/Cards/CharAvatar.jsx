@@ -4,14 +4,15 @@ import classNames from "classnames";
 
 export const CharAvatar = ({ 
   fullName, 
+  email,
   width = "w-12", 
   height = "h-12", 
   style = "",
   className = "",
   size = "md",
-  shadow = true,
+  shadow = false,
   border = false,
-  hoverEffect = true
+  hoverEffect = false
 }) => {
   // Size presets
   const sizeClasses = {
@@ -22,37 +23,47 @@ export const CharAvatar = ({
     xl: "w-16 h-16 text-xl"
   };
 
-  // Color generation based on name hash (consistent colors for same names)
-  const nameHash = fullName ? fullName.split("").reduce((acc, char) => {
+  // Color generation based on email or name hash (consistent colors)
+  const hashSource = email || fullName || "User";
+  const nameHash = hashSource.split("").reduce((acc, char) => {
     return char.charCodeAt(0) + ((acc << 5) - acc);
-  }, 0) : 0;
+  }, 0);
 
   const hue = Math.abs(nameHash) % 360;
-  const bgColor = `hsl(${hue}, 70%, 45%)`;
-  const textColor = `hsl(${hue}, 20%, 95%)`;
+  const bgColor = `hsl(${hue}, 65%, 45%)`;
+  const textColor = "#FFFFFF";
 
   return (
     <div
-      className={classNames(
-        "flex items-center justify-center rounded-full font-medium",
-        "transition-all duration-300 transform",
-        {
-          "shadow-md": shadow,
-          "border-2 border-white/30": border,
-          "hover:scale-105 hover:shadow-lg": hoverEffect,
-          [sizeClasses[size]]: true,
-          [className]: className
-        }
-      )}
       style={{
+        width: "38px",
+        height: "38px",
+        borderRadius: "6px",
         backgroundColor: bgColor,
         color: textColor,
-        ...(style && typeof style === 'object' ? style : {})
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
+        flexShrink: 0,
+        userSelect: "none",
+        ...(style && typeof style === "object" ? style : {}),
       }}
-      title={fullName}
+      title={fullName || email || "User"}
     >
-      <span className="select-none">
-        {getInitials(fullName || "?")}
+      <span
+        style={{
+          fontSize: "13px",
+          fontWeight: 700,
+          lineHeight: 1,
+          letterSpacing: "0.5px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          transform: "translateY(0.5px)",
+        }}
+      >
+        {getInitials(fullName || "?", email)}
       </span>
     </div>
   );

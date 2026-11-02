@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { UserContext } from "../../context/userContext";
 import Navbar from "./Navbar";
 import SideMenu from "./SideMenu";
+import MobileBottomNav from "./MobileBottomNav";
 
 const DashboardLayout = ({ children, activeMenu }) => {
   const { user } = useContext(UserContext);
@@ -17,20 +18,20 @@ const DashboardLayout = ({ children, activeMenu }) => {
       <Navbar activeMenu={activeMenu} />
       {user && (
         <div style={{ display: "flex", width: "100%" }}>
-          <div className="hidden lg:block">
+          <div className="sidebar-desktop-wrapper">
             <SideMenu activeMenu={activeMenu} />
           </div>
           <main
+            className="app-main-content"
             style={{
               flex: 1,
-              padding: "24px 28px",
-              maxWidth: "1440px",
-              margin: "0 auto",
+              padding: "14px 18px",
               width: "100%",
             }}
           >
             {children}
           </main>
+          <MobileBottomNav />
         </div>
       )}
     </div>

@@ -33,10 +33,12 @@ axiosInstance.interceptors.response.use(
     //Handle common errors globally
     if (error.response) {
       if (error.response.status === 401) {
-        //Ridirect to login page
-        window.location.href = "/login";
+        localStorage.removeItem("token");
+        if (window.location.pathname !== "/login" && window.location.pathname !== "/signUp") {
+          window.location.replace("/login");
+        }
       } else if (error.response.status === 500) {
-        console.error("Server error.Please try again later");
+        console.error("Server error. Please try again later");
       }
     } else if (error.code === "ECONNABORTED") {
       console.error("Request timeout. Please try again");

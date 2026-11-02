@@ -94,7 +94,7 @@ const Income = () => {
 
   return (
     <DashboardLayout activeMenu="Income">
-      <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
         {/* Header Action Bar */}
         <div
           style={{
@@ -102,7 +102,7 @@ const Income = () => {
             justifyContent: "space-between",
             alignItems: "center",
             flexWrap: "wrap",
-            gap: "14px",
+            gap: "10px",
           }}
         >
           <div>
@@ -110,7 +110,7 @@ const Income = () => {
               className="heading-lg"
               style={{
                 margin: 0,
-                fontSize: "26px",
+                fontSize: "22px",
                 color: "var(--text-primary)",
               }}
             >
@@ -118,8 +118,8 @@ const Income = () => {
             </h1>
             <p
               style={{
-                margin: "4px 0 0",
-                fontSize: "13px",
+                margin: "2px 0 0",
+                fontSize: "12px",
                 color: "var(--text-muted)",
               }}
             >
@@ -127,35 +127,42 @@ const Income = () => {
             </p>
           </div>
 
-          <div style={{ display: "flex", gap: "10px" }}>
+          <div style={{ display: "flex", gap: "8px" }}>
             <button
               onClick={handleDownloadIncomeDetails}
               className="btn btn-secondary"
-              style={{ padding: "8px 16px", fontSize: "13px" }}
+              style={{ padding: "6px 14px", fontSize: "12px" }}
             >
-              <FiDownload size={15} />
+              <FiDownload size={14} />
               <span>Export</span>
             </button>
             <button
               onClick={() => setOpenAddIncomeModal(true)}
               className="btn btn-primary"
-              style={{ padding: "8px 18px", fontSize: "13px" }}
+              style={{ padding: "6px 16px", fontSize: "12px" }}
             >
-              <FiPlus size={16} />
+              <FiPlus size={15} />
               <span>Add Income</span>
             </button>
           </div>
         </div>
 
-        {/* 4 Stat Metric Cards */}
+        {/* 4 Stat Metric Panels (2x2 Mobile App Grid) */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "16px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(145px, 1fr))",
+            gap: "10px",
           }}
         >
-          <div className="card card-elevated" style={{ padding: "18px 20px" }}>
+          <div
+            style={{
+              padding: "14px 18px",
+              backgroundColor: "var(--surface)",
+              border: "1px solid var(--border-default)",
+              borderRadius: "var(--radius-md)",
+            }}
+          >
             <div
               style={{
                 display: "flex",
@@ -189,7 +196,14 @@ const Income = () => {
             </div>
           </div>
 
-          <div className="card card-elevated" style={{ padding: "18px 20px" }}>
+          <div
+            style={{
+              padding: "14px 18px",
+              backgroundColor: "var(--surface)",
+              border: "1px solid var(--border-default)",
+              borderRadius: "var(--radius-md)",
+            }}
+          >
             <div
               style={{
                 display: "flex",
@@ -223,7 +237,14 @@ const Income = () => {
             </div>
           </div>
 
-          <div className="card card-elevated" style={{ padding: "18px 20px" }}>
+          <div
+            style={{
+              padding: "14px 18px",
+              backgroundColor: "var(--surface)",
+              border: "1px solid var(--border-default)",
+              borderRadius: "var(--radius-md)",
+            }}
+          >
             <div
               style={{
                 display: "flex",
@@ -239,7 +260,7 @@ const Income = () => {
                   width: "28px",
                   height: "28px",
                   borderRadius: "var(--radius-sm)",
-                  background: "var(--surface)",
+                  background: "var(--surface-hover)",
                   color: "var(--text-muted)",
                   display: "flex",
                   alignItems: "center",
@@ -257,7 +278,14 @@ const Income = () => {
             </div>
           </div>
 
-          <div className="card card-elevated" style={{ padding: "18px 20px" }}>
+          <div
+            style={{
+              padding: "14px 18px",
+              backgroundColor: "var(--surface)",
+              border: "1px solid var(--border-default)",
+              borderRadius: "var(--radius-md)",
+            }}
+          >
             <div
               style={{
                 display: "flex",

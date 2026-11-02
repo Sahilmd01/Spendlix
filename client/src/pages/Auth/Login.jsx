@@ -11,9 +11,9 @@ import {
   LuArrowRight,
   LuLock,
   LuMail,
-  LuLayers,
 } from "react-icons/lu";
 import { FiAlertCircle } from "react-icons/fi";
+import AppLogo from "../../components/AppLogo";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -74,7 +74,7 @@ const Login = () => {
       <div
         style={{
           backgroundColor: "var(--surface)",
-          padding: "44px 48px",
+          padding: "24px 28px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
@@ -90,25 +90,11 @@ const Login = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              marginBottom: "36px",
+              marginBottom: "20px",
             }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <div
-                style={{
-                  width: "42px",
-                  height: "42px",
-                  borderRadius: "var(--radius-md)",
-                  background: "var(--gradient-blue)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#FFF",
-                  boxShadow: "var(--shadow-glow)",
-                }}
-              >
-                <LuLayers size={22} />
-              </div>
+              <AppLogo size={38} />
               <div>
                 <h1
                   style={{
@@ -131,10 +117,15 @@ const Login = () => {
             </span>
           </div>
 
-          {/* Special Hero Recurring Spend Card */}
+          {/* Showcase Recurring Spend Panel */}
           <div
-            className="card card-elevated"
-            style={{ padding: "24px", marginBottom: "18px" }}
+            style={{
+              padding: "24px",
+              marginBottom: "18px",
+              backgroundColor: "var(--surface)",
+              border: "1px solid var(--border-default)",
+              borderRadius: "var(--radius-md)",
+            }}
           >
             <div
               style={{
@@ -168,7 +159,7 @@ const Login = () => {
             >
               <div
                 style={{
-                  background: "var(--surface)",
+                  background: "var(--surface-hover)",
                   padding: "10px 14px",
                   borderRadius: "var(--radius-md)",
                   border: "1px solid var(--border-subtle)",
@@ -190,7 +181,7 @@ const Login = () => {
               </div>
               <div
                 style={{
-                  background: "var(--surface)",
+                  background: "var(--surface-hover)",
                   padding: "10px 14px",
                   borderRadius: "var(--radius-md)",
                   border: "1px solid var(--border-subtle)",
@@ -217,7 +208,14 @@ const Login = () => {
           </div>
 
           {/* Visual Dynamic Spending Bar Preview */}
-          <div className="card card-elevated" style={{ padding: "20px 24px" }}>
+          <div
+            style={{
+              padding: "20px 24px",
+              backgroundColor: "var(--surface)",
+              border: "1px solid var(--border-default)",
+              borderRadius: "var(--radius-md)",
+            }}
+          >
             <div
               style={{
                 display: "flex",
@@ -251,10 +249,9 @@ const Login = () => {
                   style={{
                     flex: 1,
                     height: `${h}%`,
-                    borderRadius: "8px",
+                    borderRadius: "4px",
                     background:
-                      i === 5 ? "var(--gradient-blue)" : "var(--chart-secondary)",
-                    boxShadow: i === 5 ? "var(--shadow-glow)" : "none",
+                      i === 5 ? "var(--primary)" : "var(--chart-secondary)",
                   }}
                 />
               ))}
@@ -298,11 +295,11 @@ const Login = () => {
       {/* Right Form Panel */}
       <div
         style={{
-          padding: "56px 48px",
+          padding: "28px 24px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          maxWidth: "520px",
+          maxWidth: "480px",
           margin: "0 auto",
           width: "100%",
         }}

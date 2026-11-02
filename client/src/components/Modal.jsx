@@ -18,14 +18,13 @@ const Modal = ({ children, isOpen, onClose, title }) => {
       }}
     >
       <div
-        className="card card-elevated"
         style={{
           width: "100%",
           maxWidth: "560px",
           padding: "24px 28px",
-          borderRadius: "var(--radius-card)",
+          borderRadius: "var(--radius-md)",
           border: "1px solid var(--border-default)",
-          boxShadow: "0 24px 60px rgba(0, 0, 0, 0.6)",
+          backgroundColor: "var(--surface)",
         }}
       >
         {/* Header */}

@@ -9,11 +9,11 @@ import {
   LuMail,
   LuLock,
   LuArrowRight,
-  LuLayers,
   LuShieldCheck,
   LuCreditCard,
 } from "react-icons/lu";
 import { FiAlertCircle } from "react-icons/fi";
+import AppLogo from "../../components/AppLogo";
 
 const SignUp = () => {
   const [fullName, setFullName] = useState("");
@@ -82,7 +82,7 @@ const SignUp = () => {
       <div
         style={{
           backgroundColor: "var(--surface)",
-          padding: "44px 48px",
+          padding: "24px 28px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
@@ -98,25 +98,11 @@ const SignUp = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              marginBottom: "36px",
+              marginBottom: "20px",
             }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <div
-                style={{
-                  width: "42px",
-                  height: "42px",
-                  borderRadius: "var(--radius-md)",
-                  background: "var(--gradient-blue)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#FFF",
-                  boxShadow: "var(--shadow-glow)",
-                }}
-              >
-                <LuLayers size={22} />
-              </div>
+              <AppLogo size={38} />
               <div>
                 <h1
                   style={{
@@ -137,13 +123,14 @@ const SignUp = () => {
             <span className="badge badge-success">Instant Access</span>
           </div>
 
-          {/* Promotional Gradient Card */}
+          {/* Subscription Feature Highlight Panel */}
           <div
-            className="promo-card"
             style={{
-              padding: "24px",
+              padding: "22px 24px",
               marginBottom: "18px",
-              border: "1px solid var(--border-subtle)",
+              backgroundColor: "var(--surface)",
+              border: "1px solid var(--border-default)",
+              borderRadius: "var(--radius-md)",
             }}
           >
             <div
@@ -156,18 +143,19 @@ const SignUp = () => {
             >
               <div
                 style={{
-                  width: "34px",
-                  height: "34px",
-                  borderRadius: "50%",
-                  background: "#FA2D48",
+                  width: "32px",
+                  height: "32px",
+                  borderRadius: "var(--radius-sm)",
+                  background: "var(--primary)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   color: "#FFF",
-                  fontSize: "16px",
+                  fontSize: "14px",
+                  fontWeight: 600,
                 }}
               >
-                ♫
+                S
               </div>
               <div>
                 <div style={{ fontSize: "14px", fontWeight: 600 }}>
@@ -181,22 +169,29 @@ const SignUp = () => {
 
             <div
               style={{
-                fontSize: "22px",
+                fontSize: "18px",
                 fontWeight: 600,
-                color: "#FFF",
-                margin: "14px 0 4px",
-                letterSpacing: "-0.5px",
+                color: "var(--text-primary)",
+                margin: "12px 0 4px",
+                letterSpacing: "-0.3px",
               }}
             >
-              3 Months Free Trial
+              Automatic Spending Insights
             </div>
-            <div style={{ fontSize: "12px", color: "var(--text-secondary)" }}>
-              Then $10.99/month · Cancel anytime with 1-click
+            <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+              Manage recurring bills and expenses seamlessly in real time
             </div>
           </div>
 
           {/* Transaction Activity Stream */}
-          <div className="card card-elevated" style={{ padding: "20px 24px" }}>
+          <div
+            style={{
+              padding: "20px 24px",
+              backgroundColor: "var(--surface)",
+              border: "1px solid var(--border-default)",
+              borderRadius: "var(--radius-md)",
+            }}
+          >
             <div
               style={{
                 display: "flex",
@@ -306,11 +301,11 @@ const SignUp = () => {
       {/* Right Form Panel */}
       <div
         style={{
-          padding: "56px 48px",
+          padding: "28px 24px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          maxWidth: "520px",
+          maxWidth: "480px",
           margin: "0 auto",
           width: "100%",
         }}
