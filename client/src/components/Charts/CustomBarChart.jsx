@@ -9,32 +9,117 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
+import { LuChartBar, LuPlus } from "react-icons/lu";
 
-const CustomBarChart = ({ data }) => {
+const CustomBarChart = ({
+  data,
+  emptyTitle = "No data recorded",
+  emptySubtitle = "Transactions logged will appear as bar charts here",
+  onAdd,
+  addButtonText,
+}) => {
   const [activeIndex, setActiveIndex] = useState(null);
 
-  const getBarColor = (index) => {
-    const colors = [
-      "url(#gradient1)",
-      "url(#gradient2)",
-      "url(#gradient3)",
-      "url(#gradient4)",
-    ];
-    return colors[index % colors.length];
-  };
+  const hasData =
+    data && data.length > 0 && data.some((item) => Number(item.amount) > 0);
+
+  if (!hasData) {
+    return (
+      <div
+        style={{
+          height: "260px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "10px",
+          textAlign: "center",
+          padding: "20px",
+        }}
+      >
+        <div
+          style={{
+            width: "48px",
+            height: "48px",
+            borderRadius: "50%",
+            backgroundColor: "var(--surface)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "var(--text-muted)",
+          }}
+        >
+          <LuChartBar size={22} />
+        </div>
+        <div
+          style={{
+            fontSize: "14px",
+            fontWeight: 500,
+            color: "var(--text-primary)",
+          }}
+        >
+          {emptyTitle}
+        </div>
+        <div
+          style={{
+            fontSize: "12px",
+            color: "var(--text-muted)",
+            maxWidth: "280px",
+          }}
+        >
+          {emptySubtitle}
+        </div>
+        {onAdd && (
+          <button
+            onClick={onAdd}
+            className="btn btn-secondary"
+            style={{
+              marginTop: "8px",
+              padding: "7px 16px",
+              fontSize: "12px",
+              borderRadius: "var(--radius-pill)",
+              gap: "6px",
+            }}
+          >
+            <LuPlus size={14} />
+            <span>{addButtonText || "Add Entry"}</span>
+          </button>
+        )}
+      </div>
+    );
+  }
 
   const CustomToolTip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white shadow-xl rounded-lg p-3 border-0 backdrop-blur-sm bg-opacity-90">
-          <p className="text-sm font-bold text-indigo-800 mb-1">
-            {payload[0].payload.category}
+        <div
+          style={{
+            backgroundColor: "#10101B",
+            border: "1px solid rgba(255, 255, 255, 0.08)",
+            borderRadius: "var(--radius-md)",
+            padding: "10px 14px",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+          }}
+        >
+          <p
+            style={{
+              fontSize: "12px",
+              color: "var(--text-muted)",
+              marginBottom: "4px",
+              textTransform: "uppercase",
+            }}
+          >
+            {payload[0].payload.category || payload[0].payload.source}
           </p>
-          <p className="text-sm text-gray-600 font-medium">
-            Amount:{" "}
-            <span className="text-sm font-bold text-indigo-600">
-              ₹{payload[0].payload.amount.toLocaleString()}
-            </span>
+          <p
+            style={{
+              margin: 0,
+              fontSize: "14px",
+              fontWeight: 700,
+              color: "var(--primary-light)",
+            }}
+          >
+            ₹{payload[0].payload.amount?.toLocaleString()}
           </p>
         </div>
       );
@@ -42,87 +127,72 @@ const CustomBarChart = ({ data }) => {
     return null;
   };
 
-  const handleMouseEnter = (_, index) => {
-    setActiveIndex(index);
-  };
-
-  const handleMouseLeave = () => {
-    setActiveIndex(null);
-  };
-
   return (
-    <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-6 rounded-2xl shadow-lg mt-6 border border-indigo-100 overflow-x-auto">
-      <h3 className="text-xl font-bold text-indigo-900 mb-4">
-        Financial Overview
-      </h3>
-
-      <div style={{ width: `${data.length * 32}px`, minWidth: "100%" }}>
-        <ResponsiveContainer width="100%" height={350}>
+    <div
+      style={{
+        backgroundColor: "transparent",
+        marginTop: "16px",
+        width: "100%",
+        overflowX: data.length > 8 ? "auto" : "visible",
+      }}
+    >
+      <div
+        style={{
+          width: data.length > 8 ? `${data.length * 48}px` : "100%",
+          minWidth: "100%",
+        }}
+      >
+        <ResponsiveContainer width="100%" height={280}>
           <BarChart
             data={data}
-            margin={{ top: 10, right: 30, left: 0, bottom: 20 }}
+            margin={{ top: 15, right: 15, left: -20, bottom: 25 }}
+            onMouseMove={(state) => {
+              if (state.isTooltipActive) {
+                setActiveIndex(state.activeTooltipIndex);
+              } else {
+                setActiveIndex(null);
+              }
+            }}
+            onMouseLeave={() => setActiveIndex(null)}
           >
-            <defs>
-              <linearGradient id="gradient1" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#6a11cb" />
-                <stop offset="100%" stopColor="#2575fc" />
-              </linearGradient>
-              <linearGradient id="gradient2" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#f54ea2" />
-                <stop offset="100%" stopColor="#ff7676" />
-              </linearGradient>
-              <linearGradient id="gradient3" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#17ead9" />
-                <stop offset="100%" stopColor="#6078ea" />
-              </linearGradient>
-              <linearGradient id="gradient4" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#f02fc2" />
-                <stop offset="100%" stopColor="#6094ea" />
-              </linearGradient>
-            </defs>
-
-            <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" vertical={false} />
-
+            <CartesianGrid
+              strokeDasharray="3 3"
+              vertical={false}
+              stroke="rgba(255, 255, 255, 0.04)"
+            />
             <XAxis
-              dataKey="month"
-              tick={{ fontSize: 11, fill: "#64748b" }}
-              axisLine={{ stroke: "#cbd5e1" }}
+              dataKey={data[0]?.category ? "category" : "source"}
+              tick={{ fill: "#9292A3", fontSize: 11 }}
+              axisLine={{ stroke: "rgba(255, 255, 255, 0.08)" }}
               tickLine={false}
               interval={0}
-              angle={-45}
+              angle={-25}
               textAnchor="end"
-              height={60}
             />
-
             <YAxis
-              tick={{ fontSize: 12, fill: "#64748b" }}
-              axisLine={{ stroke: "#cbd5e1" }}
+              tick={{ fill: "#9292A3", fontSize: 11 }}
+              axisLine={false}
               tickLine={false}
-              tickFormatter={(value) => `₹${value.toLocaleString()}`}
+              tickFormatter={(v) =>
+                `₹${v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v}`
+              }
             />
-
             <Tooltip
-              content={CustomToolTip}
-              cursor={{ fill: "rgba(99, 102, 241, 0.1)" }}
+              content={<CustomToolTip />}
+              cursor={{ fill: "rgba(255,255,255,0.02)" }}
             />
-
-            <Bar
-              dataKey="amount"
-              radius={[12, 12, 0, 0]}
-              barSize={14}
-              onMouseEnter={handleMouseEnter}
-              activeBar={{
-                radius: [12, 12, 0, 0],
-                stroke: "#fff",
-                strokeWidth: 2,
-              }}
-            >
-              {data.map((entry, index) => (
+            <Bar dataKey="amount" radius={[8, 8, 4, 4]}>
+              {data.map((_, index) => (
                 <Cell
-                  key={index}
-                  fill={getBarColor(index)}
-                  strokeWidth={index === activeIndex ? 2 : 0}
-                  stroke="#fff"
+                  key={`cell-${index}`}
+                  fill={index === activeIndex ? "#3B82F6" : "#1D3D79"}
+                  style={{
+                    filter:
+                      index === activeIndex
+                        ? "drop-shadow(0 0 8px rgba(37,99,235,0.4))"
+                        : "none",
+                    transition: "all 0.3s ease",
+                  }}
                 />
               ))}
             </Bar>

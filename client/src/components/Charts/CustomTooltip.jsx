@@ -2,32 +2,39 @@ import React from "react";
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
-    const categoryColor = payload[0].payload.fill; // Get the color from the pie segment
-    
+    const categoryColor = payload[0].payload?.fill || "var(--primary)";
+
     return (
-      <div className="bg-white backdrop-blur-sm bg-opacity-90 shadow-lg rounded-xl p-3 border-0">
-        <div className="flex items-center mb-1">
-          <div 
-            className="w-3 h-3 rounded-full mr-2"
-            style={{ backgroundColor: categoryColor }}
+      <div
+        className="chart-tooltip"
+        style={{
+          minWidth: "140px",
+          backgroundColor: "#10101B",
+          border: "1px solid rgba(255, 255, 255, 0.08)",
+          borderRadius: "var(--radius-md)",
+          padding: "10px 14px",
+          boxShadow: "0 8px 24px rgba(0, 0, 0, 0.4)",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
+          <div
+            style={{
+              width: "10px",
+              height: "10px",
+              borderRadius: "50%",
+              backgroundColor: categoryColor,
+            }}
           />
-          <p className="text-sm font-bold text-gray-800">
+          <span style={{ fontSize: "13px", fontWeight: 600, color: "#FFFFFF" }}>
             {payload[0].name}
-          </p>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-xs font-medium text-gray-500">Amount:</span>
-          <span className="text-sm font-bold ml-2" style={{ color: categoryColor }}>
-            ₹{payload[0].value.toLocaleString()}
           </span>
         </div>
-        {/* Optional percentage display - uncomment if you want to show percentages */}
-        {/* <div className="flex justify-between items-center mt-1">
-          <span className="text-xs font-medium text-gray-500">Percentage:</span>
-          <span className="text-xs font-semibold text-gray-700">
-            {((payload[0].payload.percent || 0) * 100).toFixed(1)}%
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "4px" }}>
+          <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>Amount:</span>
+          <span style={{ fontSize: "13px", fontWeight: 700, color: categoryColor }}>
+            ₹{payload[0].value?.toLocaleString()}
           </span>
-        </div> */}
+        </div>
       </div>
     );
   }

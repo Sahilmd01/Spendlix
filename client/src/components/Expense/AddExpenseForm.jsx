@@ -3,50 +3,53 @@ import Input from "../Inputs/Input";
 import EmojiPickerPopup from "../EmojiPickerPopup";
 
 function AddExpenseForm({ onAddExpense }) {
-  const [income, setIncome] = useState({
+  const [expense, setExpense] = useState({
     category: "",
     amount: "",
     date: "",
     icon: "",
   });
 
-  const handleChange = (key, value) => setIncome({ ...income, [key]: value });
+  const handleChange = (key, value) => setExpense({ ...expense, [key]: value });
 
   return (
     <div>
-      <EmojiPickerPopup
-        icon={income.icon}
-        onSelect={(selectedIcon) => handleChange("icon", selectedIcon)}
-      />
+      <div style={{ marginBottom: "16px" }}>
+        <EmojiPickerPopup
+          icon={expense.icon}
+          onSelect={(selectedIcon) => handleChange("icon", selectedIcon)}
+        />
+      </div>
+
       <Input
-        value={income.category}
+        value={expense.category}
         onChange={({ target }) => handleChange("category", target.value)}
         label="Category"
-        placeholder="Rent, Groceries, etc"
+        placeholder="Subscriptions, Groceries, Rent..."
         type="text"
       />
 
       <Input
-        value={income.amount}
+        value={expense.amount}
         onChange={({ target }) => handleChange("amount", target.value)}
-        label="Amount"
-        placeholder=""
+        label="Amount (₹)"
+        placeholder="1200"
         type="number"
       />
 
       <Input
-        value={income.date}
+        value={expense.date}
         onChange={({ target }) => handleChange("date", target.value)}
         label="Date"
-        placeholder=""
         type="date"
       />
 
-      <div className="flex justify-end mt-6">
+      <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "20px" }}>
         <button
           type="button"
-          className="add-btn add-btn-fill"
-          onClick={() => onAddExpense(income)}
+          className="btn btn-primary"
+          style={{ padding: "10px 24px" }}
+          onClick={() => onAddExpense(expense)}
         >
           Add Expense
         </button>

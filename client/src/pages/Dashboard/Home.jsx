@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
-  LuHandCoins,
   LuWalletMinimal,
+  LuHandCoins,
   LuTrendingUp,
-  LuPiggyBank,
+  LuCreditCard,
+  LuArrowUpRight,
+  LuShieldAlert,
 } from "react-icons/lu";
-import { IoMdCard } from "react-icons/io";
-import { FiArrowUpRight, FiActivity } from "react-icons/fi";
-import { motion, AnimatePresence } from "framer-motion";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
 import { useUserAuth } from "../../hooks/useUserAuth";
 import { useNavigate } from "react-router-dom";
@@ -21,39 +20,11 @@ import Last30DaysExpenses from "../../components/Dashboard/Last30DaysExpenses";
 import RecentIncomeWithChart from "../../components/Dashboard/RecentIncomeWithChart";
 import RecentIncome from "../../components/Dashboard/RecentIncome";
 
-const shimmerEffect = `
-  @keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
-
-  .shimmer-bg {
-    animation: shimmer 1.5s infinite linear;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.05) 0%,
-      rgba(255, 255, 255, 0.2) 50%,
-      rgba(255, 255, 255, 0.05) 100%
-    );
-    background-size: 200% 100%;
-  }
-`;
-
 const Home = () => {
   useUserAuth();
   const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("overview");
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const fetchDashboardData = async () => {
     try {
@@ -70,248 +41,333 @@ const Home = () => {
     fetchDashboardData();
   }, []);
 
-  const cardColors = [
-    "from-indigo-700/10 to-indigo-500/10",
-    "from-emerald-700/10 to-emerald-500/10",
-    "from-rose-700/10 to-rose-500/10",
-    "from-amber-700/10 to-amber-500/10",
-  ];
-
-  const InfoCard = ({ icon, label, value, trend, loading, colorIndex }) => (
-    <motion.div
-      whileHover={{ scale: 1.03, y: -6 }}
-      whileTap={{ scale: 0.98 }}
-      className={`relative rounded-3xl p-6 backdrop-blur-md bg-white/85 border border-white/30 shadow-2xl overflow-hidden group bg-gradient-to-br ${cardColors[colorIndex]} hover:shadow-3xl transition-all duration-300 ease-in-out`}
-    >
-      <div className="relative z-10">
-        <div className="flex justify-between items-start">
-          <div className="p-3.5 rounded-xl bg-white/95 text-indigo-700 shadow-lg transition-transform group-hover:scale-105">
-            {icon}
-          </div>
-          {trend && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.7 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3 }}
-              className={`px-2.5 py-1 rounded-lg text-xs font-semibold tracking-wide ${
-                trend.value > 0
-                  ? "bg-emerald-100/90 text-emerald-900"
-                  : "bg-rose-100/90 text-rose-900"
-              } shadow-sm`}
-            >
-              {trend.value > 0 ? "↑" : "↓"} {Math.abs(trend.value)}%
-            </motion.div>
-          )}
-        </div>
-        <div className="mt-5">
-          <p className="text-sm font-medium text-gray-500 tracking-wide uppercase">{label}</p>
-          {loading ? (
-            <div className="h-9 w-2/3 mt-2 shimmer-bg rounded-lg" />
-          ) : (
-            <h3 className="text-2xl font-bold text-gray-900 mt-1.5 tracking-tight">
-              ₹{value}
-            </h3>
-          )}
-        </div>
-      </div>
-    </motion.div>
-  );
-
-  const TabButton = ({ name, icon, active }) => (
-    <motion.button
-      whileHover={{ scale: 1.06, y: -2 }}
-      whileTap={{ scale: 0.94 }}
-      onClick={() => setActiveTab(name)}
-      className={`flex items-center px-4 py-2.5 rounded-xl text-sm font-semibold tracking-wide transition-all duration-200 ${
-        active === name
-          ? "bg-indigo-700 text-white shadow-md"
-          : "text-gray-500 hover:bg-gray-50/90 hover:text-indigo-700"
-      }`}
-    >
-      {icon}
-      {!isMobile && <span className="ml-2.5 capitalize">{name}</span>}
-    </motion.button>
-  );
+  const totalBalance = dashboardData?.totalBalance || 0;
+  const totalIncome = dashboardData?.totalIncome || 0;
+  const totalExpense = dashboardData?.totalExpense || 0;
+  const netSavings = totalIncome - totalExpense;
 
   return (
     <DashboardLayout activeMenu="Dashboard">
-      <style>{shimmerEffect}</style>
+      <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        {/* Top Section: Promo + Recurring Spend Hero + Payment Alert */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: "18px",
+          }}
+        >
+          {/* 1. Try Premium / Promo Banner (inspired by reference Apple Music card) */}
+          <div
+            className="promo-card"
+            style={{
+              padding: "26px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              minHeight: "180px",
+              border: "1px solid var(--border-subtle)",
+            }}
+          >
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <div
+                  style={{
+                    width: "34px",
+                    height: "34px",
+                    borderRadius: "50%",
+                    background: "#FA2D48",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#FFF",
+                    fontSize: "16px",
+                  }}
+                >
+                  ♫
+                </div>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: "15px", fontWeight: 600 }}>
+                    Try Spendix Pro
+                  </h4>
+                  <p
+                    style={{
+                      margin: "2px 0 0",
+                      fontSize: "12px",
+                      color: "var(--text-secondary)",
+                    }}
+                  >
+                    Enjoy 3 months of automatic subscription tracking
+                  </p>
+                </div>
+              </div>
+            </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-10 font-inter">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10">
-          <div>
-            <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">
-              Financial Dashboard
-            </h1>
-            <p className="text-gray-400 mt-2 text-base md:text-lg tracking-wide">
-              {new Date().toLocaleDateString("en-US", {
-                weekday: "long",
-                month: "long",
-                day: "numeric",
-              })}
-            </p>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-end",
+                marginTop: "20px",
+              }}
+            >
+              <div>
+                <div
+                  style={{
+                    fontSize: "22px",
+                    fontWeight: 700,
+                    letterSpacing: "-0.5px",
+                  }}
+                >
+                  3 Months Free
+                </div>
+                <div style={{ fontSize: "11px", color: "var(--text-secondary)" }}>
+                  Then ₹199/month · Cancel anytime
+                </div>
+              </div>
+              <button
+                className="btn btn-primary"
+                style={{
+                  padding: "8px 18px",
+                  fontSize: "13px",
+                  borderRadius: "var(--radius-pill)",
+                }}
+              >
+                Start Now
+              </button>
+            </div>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: -15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="mt-5 md:mt-0 flex space-x-1.5 bg-white/90 backdrop-blur-md p-1.5 rounded-xl shadow-lg border border-white/30"
+          {/* 2. Total Monthly Recurring Spend (Main Hero Metric) */}
+          <div
+            className="card card-elevated"
+            style={{
+              padding: "24px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+            }}
           >
-            <TabButton
-              name="overview"
-              icon={<FiActivity className="w-5 h-5" />}
-              active={activeTab}
-            />
-            <TabButton
-              name="analytics"
-              icon={<LuTrendingUp className="w-5 h-5" />}
-              active={activeTab}
-            />
-            <TabButton
-              name="reports"
-              icon={<LuPiggyBank className="w-5 h-5" />}
-              active={activeTab}
-            />
-          </motion.div>
+            <div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: "8px",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <LuCreditCard size={18} color="var(--primary-light)" />
+                  <span style={{ fontSize: "13px", color: "var(--text-muted)" }}>
+                    Total Monthly Recurring Spend
+                  </span>
+                </div>
+                <span className="badge badge-success">+8.5% increase</span>
+              </div>
+
+              <div
+                className="heading-xl"
+                style={{
+                  fontSize: "42px",
+                  color: "var(--text-primary)",
+                  margin: "8px 0 0",
+                }}
+              >
+                ₹{addThousandSeparator(totalExpense)}
+              </div>
+            </div>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr 1fr",
+                gap: "10px",
+                marginTop: "16px",
+                paddingTop: "14px",
+                borderTop: "1px solid var(--border-subtle)",
+              }}
+            >
+              <div
+                style={{
+                  background: "var(--surface)",
+                  padding: "8px 12px",
+                  borderRadius: "var(--radius-md)",
+                  border: "1px solid var(--border-subtle)",
+                }}
+              >
+                <div style={{ fontSize: "10px", color: "var(--text-muted)" }}>
+                  Balance
+                </div>
+                <div
+                  style={{
+                    fontSize: "14px",
+                    fontWeight: 600,
+                    color: "var(--text-primary)",
+                    marginTop: "2px",
+                  }}
+                >
+                  ₹{addThousandSeparator(totalBalance)}
+                </div>
+              </div>
+              <div
+                style={{
+                  background: "var(--surface)",
+                  padding: "8px 12px",
+                  borderRadius: "var(--radius-md)",
+                  border: "1px solid var(--border-subtle)",
+                }}
+              >
+                <div style={{ fontSize: "10px", color: "var(--text-muted)" }}>
+                  Income
+                </div>
+                <div
+                  style={{
+                    fontSize: "14px",
+                    fontWeight: 600,
+                    color: "var(--success)",
+                    marginTop: "2px",
+                  }}
+                >
+                  ₹{addThousandSeparator(totalIncome)}
+                </div>
+              </div>
+              <div
+                style={{
+                  background: "var(--surface)",
+                  padding: "8px 12px",
+                  borderRadius: "var(--radius-md)",
+                  border: "1px solid var(--border-subtle)",
+                }}
+              >
+                <div style={{ fontSize: "10px", color: "var(--text-muted)" }}>
+                  Savings
+                </div>
+                <div
+                  style={{
+                    fontSize: "14px",
+                    fontWeight: 600,
+                    color: "var(--accent)",
+                    marginTop: "2px",
+                  }}
+                >
+                  ₹{addThousandSeparator(netSavings)}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Stats Grid */}
-        <AnimatePresence>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"
+        {/* Payment Alert Banner (inspired by reference image) */}
+        <div
+          className="alert-gradient"
+          style={{
+            padding: "14px 22px",
+            borderRadius: "var(--radius-card)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: "12px",
+            border: "1px solid var(--border-subtle)",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <LuShieldAlert size={18} color="#FBBF24" />
+            <span style={{ fontSize: "13px", color: "var(--text-primary)" }}>
+              Your recurring expenses are synced. Review recent categories to avoid surprise overdrafts.
+            </span>
+          </div>
+          <button
+            onClick={() => navigate("/expense")}
+            className="btn btn-secondary"
+            style={{
+              padding: "6px 16px",
+              fontSize: "12px",
+              borderRadius: "var(--radius-pill)",
+              backgroundColor: "rgba(255, 255, 255, 0.1)",
+            }}
           >
-            <InfoCard
-              icon={<IoMdCard className="w-7 h-7" />}
-              label="Total Balance"
-              value={addThousandSeparator(dashboardData?.totalBalance || 0)}
-              trend={{ value: 12.5 }}
-              loading={loading}
-              colorIndex={0}
-            />
-            <InfoCard
-              icon={<LuWalletMinimal className="w-7 h-7" />}
-              label="Total Income"
-              value={addThousandSeparator(dashboardData?.totalIncome || 0)}
-              trend={{ value: 8.2 }}
-              loading={loading}
-              colorIndex={1}
-            />
-            <InfoCard
-              icon={<LuHandCoins className="w-7 h-7" />}
-              label="Total Expenses"
-              value={addThousandSeparator(dashboardData?.totalExpense || 0)}
-              trend={{ value: -4.3 }}
-              loading={loading}
-              colorIndex={2}
-            />
-            <InfoCard
-              icon={<FiArrowUpRight className="w-7 h-7" />}
-              label="Net Savings"
-              value={addThousandSeparator(
-                (dashboardData?.totalIncome || 0) -
-                  (dashboardData?.totalExpense || 0)
-              )}
-              trend={{ value: 5.7 }}
-              loading={loading}
-              colorIndex={3}
-            />
-          </motion.div>
-        </AnimatePresence>
+            Review Now →
+          </button>
+        </div>
 
-        {/* Main Content */}
-        <div className="space-y-10">
-          {/* First Row */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="lg:col-span-2 bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl border border-white/30"
-            >
-              <FinanceOverview
-                totalBalance={dashboardData?.totalBalance || 0}
-                totalIncome={dashboardData?.totalIncome || 0}
-                totalExpense={dashboardData?.totalExpense || 0}
-                loading={loading}
-              />
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-              className="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl border border-white/30"
-            >
-              <RecentTransactions
-                transactions={dashboardData?.recentTransactions}
-                onSeeMore={() => navigate("/expense")}
-                loading={loading}
-              />
-            </motion.div>
+        {/* Middle Section: Visual Charts & Analytics */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))",
+            gap: "18px",
+          }}
+        >
+          {/* Finance Overview Pie Chart */}
+          <div className="card card-elevated" style={{ padding: "22px" }}>
+            <FinanceOverview
+              totalBalance={totalBalance}
+              totalIncome={totalIncome}
+              totalExpense={totalExpense}
+              loading={loading}
+            />
           </div>
 
-          {/* Second Row */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.5 }}
-              className="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl border border-white/30"
-            >
-              <Last30DaysExpenses
-                data={dashboardData?.last30daysExpenses?.transactions || []}
-                loading={loading}
-              />
-            </motion.div>
+          {/* Recent Activity stream */}
+          <div className="card card-elevated" style={{ padding: "22px" }}>
+            <RecentTransactions
+              transactions={dashboardData?.recentTransactions}
+              onSeeMore={() => navigate("/expense")}
+              loading={loading}
+            />
+          </div>
+        </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              className="lg:col-span-2 bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl border border-white/30"
-            >
-              <RecentIncomeWithChart
-                data={
-                  dashboardData?.last60DaysIncome?.transaction?.slice(0, 6) || []
-                }
-                totalIncome={dashboardData?.totalIncome || 0}
-                loading={loading}
-              />
-            </motion.div>
+        {/* Bottom Section: Trend Breakdown & Recent Income */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))",
+            gap: "18px",
+          }}
+        >
+          <div className="card card-elevated" style={{ padding: "22px" }}>
+            <Last30DaysExpenses
+              data={dashboardData?.last30daysExpenses?.transactions || []}
+              loading={loading}
+            />
           </div>
 
-          {/* Third Row */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-              className="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl border border-white/30"
-            >
-              <ExpenseTransactions
-                transactions={dashboardData?.last30daysExpenses?.transactions || []}
-                onSeeMore={() => navigate("/expense")}
-                loading={loading}
-              />
-            </motion.div>
+          <div className="card card-elevated" style={{ padding: "22px" }}>
+            <RecentIncomeWithChart
+              data={
+                dashboardData?.last60DaysIncome?.transaction?.slice(0, 6) || []
+              }
+              totalIncome={totalIncome}
+              loading={loading}
+            />
+          </div>
+        </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.5 }}
-              className="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl border border-white/30"
-            >
-              <RecentIncome
-                transactions={dashboardData?.last60DaysIncome?.transaction || []}
-                onSeeMore={() => navigate("/income")}
-                loading={loading}
-              />
-            </motion.div>
+        {/* Detail lists */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))",
+            gap: "18px",
+          }}
+        >
+          <div className="card card-elevated" style={{ padding: "22px" }}>
+            <ExpenseTransactions
+              transactions={dashboardData?.last30daysExpenses?.transactions || []}
+              onSeeMore={() => navigate("/expense")}
+              loading={loading}
+            />
+          </div>
+
+          <div className="card card-elevated" style={{ padding: "22px" }}>
+            <RecentIncome
+              transactions={dashboardData?.last60DaysIncome?.transaction || []}
+              onSeeMore={() => navigate("/income")}
+              loading={loading}
+            />
           </div>
         </div>
       </div>

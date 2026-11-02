@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-
+import React, { useContext } from "react";
 import { UserContext } from "../../context/userContext";
 import Navbar from "./Navbar";
 import SideMenu from "./SideMenu";
@@ -8,15 +7,30 @@ const DashboardLayout = ({ children, activeMenu }) => {
   const { user } = useContext(UserContext);
 
   return (
-    <div className="">
+    <div
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "var(--background)",
+        color: "var(--text-primary)",
+      }}
+    >
       <Navbar activeMenu={activeMenu} />
       {user && (
-        <div className="flex">
-          <div className="max-[1080px]:hidden">
+        <div style={{ display: "flex", width: "100%" }}>
+          <div className="hidden lg:block">
             <SideMenu activeMenu={activeMenu} />
           </div>
-
-          <div className="grow mx-5">{children}</div>
+          <main
+            style={{
+              flex: 1,
+              padding: "24px 28px",
+              maxWidth: "1440px",
+              margin: "0 auto",
+              width: "100%",
+            }}
+          >
+            {children}
+          </main>
         </div>
       )}
     </div>

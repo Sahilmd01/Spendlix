@@ -15,43 +15,98 @@ const TransactionInfoCard = ({
   hideDeleteBtn,
   onDelete,
 }) => {
-  const getAmountStyles = () =>
-    type === "income" ? "bg-green-50 text-green-500" : "bg-red-50 text-red-500";
+  const isIncome = type === "income";
 
   return (
-    <div className="group relative flex items-center gap-4 mt-2 p-3 rounded-lg hover:bg-gray-100/60">
-      <div className="w-12 h-1 flex items-center justify-center text-xl text-gray-800 bg-gray-100 rounded-full">
-        {icon ? (
-          <img src={icon} alt={title} className="w-6 h-6" />
-        ) : (
-          <LuUtensils />
-        )}
-      </div>
-
-      <div className="flex-1 flex items-center justify-between">
-        <div>
-          <p className="text-sm text-gray-700 font-medium">{title}</p>
-          <p className="text-xs text-gray-400 mt-1">{date}</p>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "10px 12px",
+        borderRadius: "var(--radius-md)",
+        backgroundColor: "var(--surface)",
+        border: "1px solid var(--border-subtle)",
+        marginTop: "8px",
+        transition: "background 0.2s ease",
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+        <div
+          style={{
+            width: "36px",
+            height: "36px",
+            borderRadius: "50%",
+            backgroundColor: "var(--surface-hover)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "var(--text-secondary)",
+            fontSize: "16px",
+          }}
+        >
+          {icon ? (
+            <img
+              src={icon}
+              alt={title}
+              style={{ width: "20px", height: "20px", objectFit: "contain" }}
+            />
+          ) : (
+            <LuUtensils size={16} />
+          )}
         </div>
 
-        <div className="flex items-center gap-2">
-          {!hideDeleteBtn && (
-            <button
-              className="text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-              onClick={onDelete}
-            >
-              <LuTrash2 size={18} />
-            </button>
-          )}
-
+        <div>
           <div
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-md ${getAmountStyles()}`}
+            style={{
+              fontSize: "13px",
+              fontWeight: 500,
+              color: "var(--text-primary)",
+            }}
           >
-            <h6 className="text-xs font-medium">
-              {type === "income" ? "+" : "-"} ₹{amount}
-            </h6>
-            {type === "income" ? <LuTrendingUp /> : <LuTrendingDown />}
+            {title}
           </div>
+          <div style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "2px" }}>
+            {date}
+          </div>
+        </div>
+      </div>
+
+      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        {!hideDeleteBtn && (
+          <button
+            onClick={onDelete}
+            style={{
+              background: "none",
+              border: "none",
+              color: "var(--text-muted)",
+              cursor: "pointer",
+              padding: "4px",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <LuTrash2 size={16} />
+          </button>
+        )}
+
+        <div
+          style={{
+            padding: "4px 10px",
+            borderRadius: "var(--radius-pill)",
+            fontSize: "12px",
+            fontWeight: 600,
+            display: "flex",
+            alignItems: "center",
+            gap: "5px",
+            backgroundColor: isIncome ? "var(--success-bg)" : "var(--error-bg)",
+            color: isIncome ? "var(--success)" : "var(--error)",
+          }}
+        >
+          <span>
+            {isIncome ? "+" : "-"} ₹{amount}
+          </span>
+          {isIncome ? <LuTrendingUp size={12} /> : <LuTrendingDown size={12} />}
         </div>
       </div>
     </div>

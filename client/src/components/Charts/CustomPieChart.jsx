@@ -10,56 +10,69 @@ import {
 import CustomTooltip from "./CustomTooltip";
 import CustomLegend from "./CustomLegend";
 
+const DEFAULT_COLORS = [
+  "#2563EB", // Primary Electric Blue
+  "#7655E9", // Accent Purple
+  "#38BDF8", // Info Cyan
+  "#22C55E", // Success Green
+  "#FBBF24", // Warning Amber
+  "#F87171", // Error Red
+  "#8B5CF6", // Violet
+  "#1D4ED8", // Deep Blue
+];
+
 const CustomPieChart = ({
   data,
   label,
   totalAmount,
-  colors = [
-    "#6366F1", // indigo-500
-    "#EC4899", // pink-500
-    "#10B981", // emerald-500
-    "#F59E0B", // amber-500
-    "#3B82F6", // blue-500
-    "#F97316", // orange-500
-    "#8B5CF6", // violet-500
-    "#EF4444", // red-500
-  ],
+  colors = DEFAULT_COLORS,
   showTextAnchor = true,
 }) => {
+  const hasValues = data && data.some((item) => Number(item.amount) > 0);
+  const displayData = hasValues
+    ? data
+    : [{ name: "No Activity", amount: 1 }];
+  const displayColors = hasValues ? colors : ["#20202E"];
+
   return (
-    <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-      <ResponsiveContainer width="100%" height={350}>
+    <div
+      style={{
+        backgroundColor: "transparent",
+        padding: "10px 0",
+      }}
+    >
+      <ResponsiveContainer width="100%" height={320}>
         <PieChart>
           <Pie
-            data={data}
+            data={displayData}
             dataKey="amount"
             nameKey="name"
             cx="50%"
             cy="50%"
-            outerRadius={120}
-            innerRadius={showTextAnchor ? 70 : 40}
-            paddingAngle={2}
-            cornerRadius={8}
+            outerRadius={110}
+            innerRadius={showTextAnchor ? 72 : 45}
+            paddingAngle={hasValues ? 3 : 0}
+            cornerRadius={6}
             labelLine={false}
             label={({ cx, cy }) =>
               showTextAnchor ? (
                 <>
                   <text
                     x={cx}
-                    y={cy - 15}
+                    y={cy - 12}
                     textAnchor="middle"
-                    fill="#4B5563"
-                    fontSize="14px"
+                    fill="#9292A3"
+                    fontSize="12px"
                     fontWeight="500"
                   >
                     {label}
                   </text>
                   <text
                     x={cx}
-                    y={cy + 15}
+                    y={cy + 16}
                     textAnchor="middle"
-                    fill="#111827"
-                    fontSize="22px"
+                    fill="#FFFFFF"
+                    fontSize="20px"
                     fontWeight="600"
                   >
                     {totalAmount}
@@ -68,31 +81,31 @@ const CustomPieChart = ({
               ) : null
             }
           >
-            {data.map((entry, index) => (
-              <Cell 
-                key={`cell-${index}`} 
-                fill={colors[index % colors.length]}
-                stroke="#FFF"
+            {displayData.map((_, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={displayColors[index % displayColors.length]}
+                stroke="var(--card)"
                 strokeWidth={2}
               />
             ))}
           </Pie>
-          <Tooltip 
-            content={<CustomTooltip />} 
-            wrapperStyle={{
-              background: 'white',
-              borderRadius: '8px',
-              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-              border: '1px solid #E5E7EB',
-              padding: '12px',
-            }}
-          />
-          <Legend 
-            content={<CustomLegend />}
-            layout="horizontal"
-            verticalAlign="bottom"
-            align="center"
-          />
+          {hasValues && (
+            <Tooltip
+              content={<CustomTooltip />}
+              wrapperStyle={{
+                outline: "none",
+              }}
+            />
+          )}
+          {hasValues && (
+            <Legend
+              content={<CustomLegend />}
+              layout="horizontal"
+              verticalAlign="bottom"
+              align="center"
+            />
+          )}
         </PieChart>
       </ResponsiveContainer>
     </div>

@@ -10,28 +10,47 @@ const ExpenseOverview = ({ transactions, onExpenseIncome }) => {
   useEffect(() => {
     const result = prepareExpenseLineChartData(transactions);
     setChartData(result);
-
-    return () => {};
   }, [transactions]);
 
   return (
     <div className="card">
-      <div className="flex items-center justify-between">
-        <div className="">
-          <h5 className="text-lg">Expense Overview</h5>
-          <p className="text-xs text-gray-400 mt-0.5">
-            Track your spending trends over time and gain insights into where
-            your money goes.
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: "12px",
+          marginBottom: "16px",
+        }}
+      >
+        <div>
+          <h5 style={{ margin: 0, fontSize: "17px", fontWeight: 600, color: "var(--text-primary)" }}>
+            Expense Overview
+          </h5>
+          <p style={{ margin: "4px 0 0", fontSize: "12px", color: "var(--text-muted)" }}>
+            Track your spending trends over time and gain insights into where your money goes.
           </p>
         </div>
-        <button className="add-btn" onClick={onExpenseIncome}>
-          <LuPlus className="text-lg" /> Add Expense
+
+        <button
+          onClick={onExpenseIncome}
+          className="btn btn-primary"
+          style={{
+            padding: "8px 18px",
+            fontSize: "13px",
+            borderRadius: "var(--radius-pill)",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+          }}
+        >
+          <LuPlus size={16} />
+          <span>Add Expense</span>
         </button>
       </div>
 
-      <div className="mt-10">
-        <CustomLineChart data={chartData} />
-      </div>
+      <CustomLineChart data={chartData} onAddExpense={onExpenseIncome} />
     </div>
   );
 };
