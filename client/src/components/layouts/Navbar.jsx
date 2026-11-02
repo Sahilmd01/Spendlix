@@ -7,7 +7,7 @@ const Navbar = ({ activeMenu }) => {
   const handleSupportClick = (e) => {
     e.preventDefault();
     const email = "codewithkinu@gmail.com";
-    const subject = encodeURIComponent("Spendix Support Request");
+    const subject = encodeURIComponent("Spendlix Support Request");
     const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}`;
 
     // Open web Gmail directly in new tab (works reliably on all browsers/devices)
@@ -15,7 +15,7 @@ const Navbar = ({ activeMenu }) => {
 
     // Copy email to clipboard and notify user
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(email).catch(() => {});
+      navigator.clipboard.writeText(email).catch(() => { });
     }
 
     toast.success("Opening support email (copied to clipboard!)", {
@@ -56,7 +56,7 @@ const Navbar = ({ activeMenu }) => {
               letterSpacing: "-0.3px",
             }}
           >
-            Spendix
+            Spendlix
           </span>
           <span
             style={{
@@ -77,7 +77,7 @@ const Navbar = ({ activeMenu }) => {
       {/* Right Actions: Direct Email Support Link */}
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         <a
-          href="mailto:codewithkinu@gmail.com?subject=Spendix%20Support%20Request"
+          href="mailto:codewithkinu@gmail.com?subject=Spendlix%20Support%20Request"
           onClick={handleSupportClick}
           className="btn btn-secondary"
           style={{

@@ -1,4 +1,4 @@
-const CACHE_NAME = "spendix-cache-v2";
+const CACHE_NAME = "Spendlix-cache-v2";
 const STATIC_ASSETS = [
   "/",
   "/index.html",
@@ -9,7 +9,7 @@ const STATIC_ASSETS = [
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(STATIC_ASSETS).catch(() => {});
+      return cache.addAll(STATIC_ASSETS).catch(() => { });
     })
   );
   self.skipWaiting();

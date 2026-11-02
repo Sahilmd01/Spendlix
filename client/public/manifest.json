@@ -1,6 +1,6 @@
 {
-  "short_name": "Spendix",
-  "name": "Spendix - Smart Expense & Subscription Tracker",
+  "short_name": "Spendlix",
+  "name": "Spendlix - Smart Expense & Subscription Tracker",
   "description": "Manage your expenses, subscriptions, and financial cashflow smartly with real-time analytics.",
   "icons": [
     {
@@ -27,7 +27,11 @@
   "theme_color": "#0D0D15",
   "background_color": "#0D0D15",
   "orientation": "portrait",
-  "categories": ["finance", "productivity", "utilities"],
+  "categories": [
+    "finance",
+    "productivity",
+    "utilities"
+  ],
   "shortcuts": [
     {
       "name": "Add Expense",

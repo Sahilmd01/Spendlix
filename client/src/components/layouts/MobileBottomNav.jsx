@@ -71,7 +71,7 @@ const MobileBottomNav = ({ onOpenAddModal }) => {
               }}
             />
             <div style={{ fontSize: "16px", fontWeight: 600, color: "var(--text-primary)" }}>
-              Sign Out of Spendix?
+              Sign Out of Spendlix?
             </div>
             <div style={{ fontSize: "13px", color: "var(--text-muted)" }}>
               Are you sure you want to end your current session?

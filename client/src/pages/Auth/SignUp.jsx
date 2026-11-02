@@ -115,7 +115,7 @@ const SignUp = () => {
                     letterSpacing: "-0.4px",
                   }}
                 >
-                  Spendix
+                  Spendlix
                 </h1>
                 <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
                   Subscription & Spend Platform
@@ -318,7 +318,7 @@ const SignUp = () => {
           <AppLogo size={34} />
           <div>
             <h1 style={{ margin: 0, fontSize: "18px", fontWeight: 700, color: "var(--text-primary)" }}>
-              Spendix
+              Spendlix
             </h1>
             <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>
               Smart Expense Tracker
