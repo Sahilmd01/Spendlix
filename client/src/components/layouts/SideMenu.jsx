@@ -45,15 +45,14 @@ const SideMenu = ({ activeMenu, onClose }) => {
     <aside
       style={{
         width: "220px",
-        height: "calc(100vh - 56px)",
-        position: "sticky",
-        top: "56px",
+        height: "100%",
         backgroundColor: "var(--card)",
         borderRight: "1px solid var(--border-subtle)",
         padding: "14px 12px",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
+        overflowY: "auto",
       }}
     >
       <div>

@@ -69,17 +69,19 @@ const SignUp = () => {
 
   return (
     <div
+      className="auth-page-wrapper"
       style={{
         minHeight: "100vh",
         width: "100vw",
         backgroundColor: "var(--card)",
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))",
+        gridTemplateColumns: "1fr 1fr",
         overflow: "hidden",
       }}
     >
       {/* Left Showcase Panel */}
       <div
+        className="auth-showcase-panel"
         style={{
           backgroundColor: "var(--surface)",
           padding: "24px 28px",
@@ -300,6 +302,7 @@ const SignUp = () => {
 
       {/* Right Form Panel */}
       <div
+        className="auth-form-panel"
         style={{
           padding: "28px 24px",
           display: "flex",
@@ -310,6 +313,19 @@ const SignUp = () => {
           width: "100%",
         }}
       >
+        {/* Mobile-only Top Brand Header */}
+        <div className="auth-mobile-header" style={{ display: "none", alignItems: "center", gap: "10px", marginBottom: "24px" }}>
+          <AppLogo size={34} />
+          <div>
+            <h1 style={{ margin: 0, fontSize: "18px", fontWeight: 700, color: "var(--text-primary)" }}>
+              Spendix
+            </h1>
+            <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>
+              Smart Expense Tracker
+            </span>
+          </div>
+        </div>
+
         <div style={{ marginBottom: "28px" }}>
           <span
             style={{

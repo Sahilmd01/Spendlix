@@ -130,7 +130,9 @@ body {
   margin: 0;
   padding: 0;
   min-width: 320px;
-  background-color: #0D0D15;
+  width: 100%;
+  height: 100%;
+  background-color: #0D0D15 !important;
   color: var(--text-primary);
   font-family: var(--font-family);
   font-size: var(--font-base);
@@ -141,6 +143,7 @@ body {
 }
 
 #root {
+  min-height: 100%;
   min-height: 100vh;
   min-height: 100dvh;
   background-color: #0D0D15;
@@ -520,7 +523,7 @@ a {
 }
 
 .app-main-content {
-  padding-bottom: 96px !important;
+  padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px)) !important;
 }
 
 @media (min-width: 1024px) {
@@ -529,6 +532,7 @@ a {
   }
   .sidebar-desktop-wrapper {
     display: block !important;
+    height: 100%;
   }
   .mobile-bottom-nav-container {
     display: none !important;
@@ -595,6 +599,33 @@ a {
 
   .card-header {
     flex-wrap: wrap;
+  }
+}
+
+/* Auth Screens (Login & SignUp): Hide left showcase on tablet & mobile, show only form */
+@media (max-width: 900px) {
+  .auth-page-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 16px !important;
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+  }
+
+  .auth-showcase-panel {
+    display: none !important;
+  }
+
+  .auth-form-panel {
+    width: 100% !important;
+    max-width: 440px !important;
+    padding: 20px 16px !important;
+  }
+
+  .auth-mobile-header {
+    display: flex !important;
   }
 }
 
