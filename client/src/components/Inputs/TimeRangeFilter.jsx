@@ -17,15 +17,21 @@ export const isWithinTimeRange = (dateString, filter) => {
   const now = new Date();
 
   if (filter === "weekly") {
-    // Current week (last 7 days or start of week)
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(now.getDate() - 7);
-    sevenDaysAgo.setHours(0, 0, 0, 0);
-    return targetDate >= sevenDaysAgo;
+    // Current week: Start from Monday 00:00:00 of the current week up to end of today
+    const day = now.getDay();
+    const diffToMonday = (day === 0 ? -6 : 1) - day; // Adjust when Sunday (0)
+    const startOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() + diffToMonday);
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 7);
+    endOfWeek.setMilliseconds(-1);
+
+    return targetDate >= startOfWeek && targetDate <= endOfWeek;
   }
 
   if (filter === "monthly") {
-    // Current calendar month or last 30 days
+    // Current calendar month: 1st day of month 00:00:00 to last day 23:59:59
     return (
       targetDate.getMonth() === now.getMonth() &&
       targetDate.getFullYear() === now.getFullYear()
@@ -33,7 +39,7 @@ export const isWithinTimeRange = (dateString, filter) => {
   }
 
   if (filter === "yearly") {
-    // Current calendar year
+    // Current calendar year: Jan 1st 00:00:00 to Dec 31st 23:59:59
     return targetDate.getFullYear() === now.getFullYear();
   }
 

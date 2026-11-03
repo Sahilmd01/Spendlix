@@ -27,6 +27,11 @@ axiosInstance.interceptors.request.use(
 //Response Interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
+    // If server issued an auto-refreshed token, store it seamlessly so user never logs out
+    const refreshedToken = response.headers?.["x-refreshed-token"];
+    if (refreshedToken) {
+      localStorage.setItem("token", refreshedToken);
+    }
     return response;
   },
   (error) => {

@@ -1,10 +1,10 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 
-//Genarate JWT token
+//Genarate JWT token (Long-lived session: 365 days / 1 year)
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "1h",
+    expiresIn: "365d",
   });
 };
 
