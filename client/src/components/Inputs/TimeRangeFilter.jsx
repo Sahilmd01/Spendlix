@@ -40,21 +40,9 @@ export const isWithinTimeRange = (dateString, filter) => {
   return true;
 };
 
-const TimeRangeFilter = ({ activeFilter, onChange, options = FILTER_OPTIONS }) => {
+const TimeRangeFilter = ({ activeFilter, onChange, options = FILTER_OPTIONS, className = "" }) => {
   return (
-    <div
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        backgroundColor: "var(--surface)",
-        padding: "3px 4px",
-        borderRadius: "var(--radius-pill)",
-        border: "1px solid var(--border-default)",
-        gap: "4px",
-        overflowX: "auto",
-        maxWidth: "100%",
-      }}
-    >
+    <div className={`time-range-filter-bar ${className}`}>
       <div
         style={{
           display: "flex",
@@ -64,7 +52,9 @@ const TimeRangeFilter = ({ activeFilter, onChange, options = FILTER_OPTIONS }) =
           paddingRight: "4px",
           color: "var(--text-muted)",
           fontSize: "12px",
+          flexShrink: 0,
         }}
+        className="time-range-calendar-icon"
       >
         <LuCalendar size={13} />
       </div>
@@ -76,19 +66,7 @@ const TimeRangeFilter = ({ activeFilter, onChange, options = FILTER_OPTIONS }) =
             key={opt.value}
             onClick={() => onChange(opt.value)}
             type="button"
-            style={{
-              padding: "5px 12px",
-              fontSize: "12px",
-              fontWeight: isActive ? 600 : 500,
-              borderRadius: "var(--radius-pill)",
-              border: "none",
-              cursor: "pointer",
-              transition: "all 0.2s ease",
-              backgroundColor: isActive ? "var(--primary)" : "transparent",
-              color: isActive ? "#FFFFFF" : "var(--text-muted)",
-              boxShadow: isActive ? "0 2px 8px rgba(37, 99, 235, 0.4)" : "none",
-              whiteSpace: "nowrap",
-            }}
+            className={`time-range-filter-btn ${isActive ? "active" : "inactive"}`}
           >
             {opt.label}
           </button>

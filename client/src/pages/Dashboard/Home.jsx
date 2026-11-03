@@ -79,15 +79,7 @@ const Home = () => {
     <DashboardLayout activeMenu="Dashboard">
       <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
         {/* Dashboard Title & Time Range Filter Bar */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: "10px",
-          }}
-        >
+        <div className="header-action-container">
           <div>
             <h1
               className="heading-lg"

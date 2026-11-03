@@ -101,15 +101,7 @@ const Expense = () => {
     <DashboardLayout activeMenu="Expense">
       <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
         {/* Header Action Bar */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: "10px",
-          }}
-        >
+        <div className="header-action-container">
           <div>
             <h1
               className="heading-lg"
@@ -132,24 +124,26 @@ const Expense = () => {
             </p>
           </div>
 
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+          <div className="header-actions-group">
             <TimeRangeFilter activeFilter={filter} onChange={setFilter} />
-            <button
-              onClick={handleDownloadExpenseDetails}
-              className="btn btn-secondary"
-              style={{ padding: "6px 14px", fontSize: "12px" }}
-            >
-              <FiDownload size={14} />
-              <span>Export</span>
-            </button>
-            <button
-              onClick={() => setOpenAddExpenseModal(true)}
-              className="btn btn-primary"
-              style={{ padding: "6px 16px", fontSize: "12px" }}
-            >
-              <FiPlus size={15} />
-              <span>Add Expense</span>
-            </button>
+            <div className="header-action-btns">
+              <button
+                onClick={handleDownloadExpenseDetails}
+                className="btn btn-secondary"
+                style={{ padding: "6px 14px", fontSize: "12px" }}
+              >
+                <FiDownload size={14} />
+                <span>Export</span>
+              </button>
+              <button
+                onClick={() => setOpenAddExpenseModal(true)}
+                className="btn btn-primary"
+                style={{ padding: "6px 16px", fontSize: "12px" }}
+              >
+                <FiPlus size={15} />
+                <span>Add Expense</span>
+              </button>
+            </div>
           </div>
         </div>
 

@@ -682,4 +682,117 @@ a {
 
 .skeleton-circle {
   border-radius: 50%;
-}
+}
+
+/* =====================================
+   TIME RANGE FILTER BAR & HEADER ACTIONS RESPONSIVE
+   ===================================== */
+.header-action-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+}
+
+.header-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.header-action-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.time-range-filter-bar {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--surface);
+  padding: 3px 4px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-default);
+  gap: 4px;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.time-range-filter-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.time-range-filter-btn {
+  padding: 5px 12px;
+  font-size: 12px;
+  border-radius: var(--radius-pill);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  font-family: inherit;
+  flex-shrink: 0;
+}
+
+.time-range-filter-btn.active {
+  font-weight: 600;
+  background-color: var(--primary);
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+}
+
+.time-range-filter-btn.inactive {
+  font-weight: 500;
+  background-color: transparent;
+  color: var(--text-muted);
+}
+
+.time-range-filter-btn.inactive:hover {
+  color: var(--text-primary);
+  background-color: var(--surface-hover);
+}
+
+@media (max-width: 640px) {
+  .header-action-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .header-actions-group {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .header-action-btns {
+    width: 100%;
+    display: flex;
+  }
+
+  .header-action-btns > .btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .time-range-filter-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+
+  .time-range-filter-bar .time-range-filter-btn {
+    flex: 1;
+    text-align: center;
+    padding: 6px 4px;
+    font-size: 11px;
+  }
+}
+
